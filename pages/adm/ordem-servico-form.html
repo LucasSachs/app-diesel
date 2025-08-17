@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criação de Ordem de Serviço</title>
+
+    <link rel="stylesheet" href="/app-diesel/bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/app-diesel/assets/css/style.css">
+    <link rel="stylesheet" href="/app-diesel/assets/css/forms.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+</head>
+<body>
+
+    <header id="app-header" class="d-flex justify-content-between align-items-center px-3">
+        <div class="d-flex align-items-center">
+             <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                 <i class="fas fa-bars text-white"></i>
+             </button>
+            <h1 class="logo-text">Logo</h1>
+        </div>
+        <button class="btn btn-light"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+    </header>
+
+    <div class="main-container d-lg-flex">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+            <div class="offcanvas-header d-lg-none">
+                <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <aside class="sidebar-nav">
+                    <div class="sidebar-header d-flex align-items-center p-3">
+                        <div class="user-icon-wrapper me-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>Administrador</span>
+                    </div>
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" href="#"><i class="fas fa-wrench"></i> Ordens de Serviço</a>
+                        <a class="nav-link" href="#"><i class="fas fa-users"></i> Clientes</a>
+                        <a class="nav-link" href="#"><i class="fas fa-user-friends"></i> Usuários</a>
+                        <a class="nav-link" href="#"><i class="fa-solid fa-box-open"></i> Produtos</a>
+                        <a class="nav-link" href="#"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                    </nav>
+                </aside>
+            </div>
+        </div>
+        
+        <main class="main-content main-content-form">
+            <div class="form-card">
+                <h2 class="form-title">Criação de Ordem de Serviço</h2>
+
+                <form id="form-os" action="/caminho/para/backend" method="POST">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="cliente" class="form-label">Cliente</label>
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="cliente" name="cliente_id" required>
+                                    <option selected disabled value="">Selecione...</option>
+                                    <option value="1">Cliente Exemplo 1</option>
+                                    <option value="2">Cliente Exemplo 2</option>
+                                </select>
+                                <button class="btn btn-success" type="button" title="Adicionar Novo Cliente">+</button>
+                            </div>
+
+                            <label for="produtos" class="form-label">Produto(s)</label>
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="produtos" name="produtos[]" multiple="multiple">
+                                    <option value="101">Produto A</option>
+                                    <option value="102">Produto B</option>
+                                    <option value="103">Produto C - Peça de Reposição</option>
+                                    <option value="104">Produto D - Material de Consumo</option>
+                                </select>
+                                <button class="btn btn-success" type="button" title="Adicionar Novo Produto">+</button>
+                            </div>
+
+                            <label for="responsavel" class="form-label">Responsável</label>
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="responsavel" name="responsavel_id" required>
+                                    <option selected disabled value="">Selecione...</option>
+                                    <option value="1">Técnico João</option>
+                                    <option value="2">Técnico Maria</option>
+                                </select>
+                                <button class="btn btn-success" type="button" title="Adicionar Novo Responsável">+</button>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="situacao" class="form-label">Situação</label>
+                                <select class="form-select" id="situacao" name="situacao" required>
+                                    <option value="aberto" selected>Em Aberto</option>
+                                    <option value="andamento">Em Andamento</option>
+                                    <option value="aguardando_peca">Aguardando Peça</option>
+                                    <option value="finalizado">Finalizado</option>
+                                    <option value="cancelado">Cancelado</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="prazo_pagamento" class="form-label">Prazo para pagamento</label>
+                                <select class="form-select" id="prazo_pagamento" name="prazo_pagamento">
+                                    <option value="avista">À vista</option>
+                                    <option value="7dias">7 dias</option>
+                                    <option value="15dias">15 dias</option>
+                                    <option value="30dias">30 dias</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="servicos" class="form-label">Serviços</label>
+                                <textarea class="form-control" id="servicos" name="servicos" rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="mao_obra" class="form-label">Mão de obra</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="mao_obra" name="mao_obra" placeholder="0,00" step="0.01">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="deslocamento" class="form-label">Deslocamento</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="deslocamento" name="deslocamento" placeholder="0" step="1">
+                                    <span class="input-group-text">km</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="valor_km" class="form-label">Valor por km</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="valor_km" name="valor_km" placeholder="0,00" step="0.01">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="total_servico" class="form-label fw-bold">Total do Serviço</label>
+                                <div class="input-group">
+                                    <span class="input-group-text fw-bold">R$</span>
+                                    <input type="text" class="form-control fw-bold" id="total_servico" name="total_servico" value="0,00" readonly>
+                                </div>
+                            </div>
+
+                             <div class="mb-3">
+                                <label for="metodo_pagamento" class="form-label">Método de Pagamento</label>
+                                <select class="form-select" id="metodo_pagamento" name="metodo_pagamento">
+                                    <option value="dinheiro">Dinheiro</option>
+                                    <option value="pix">PIX</option>
+                                    <option value="cartao_credito">Cartão de Crédito</option>
+                                    <option value="cartao_debito">Cartão de Débito</option>
+                                    <option value="boleto">Boleto Bancário</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3" style="margin-top: 2.3rem;">
+                                <label for="descricao" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="descricao" name="descricao" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-danger me-2">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Avançar</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+        </div>
+
+    <script src="/app-diesel/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="/app-diesel/assets/js/login.js"></script> 
+    <script src="/app-diesel/assets/js/script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="/app-diesel/assets/js/forms.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/app-diesel/bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/app-diesel/assets/css/style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container-fluid">
+            <span class="logo">Logo</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="login-container">
+            <h1 class="title login-title">Login</h1>
+            <form>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-at"></i></span>
+                    <input type="email" class="form-control" placeholder="Insira seu email" aria-label="Email">
+                </div>
+                <div class="input-group mb-4">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <input type="password" class="form-control" id="password" placeholder="Senha" aria-label="Senha">
+                    <span class="input-group-text password-toggle-icon" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-login">Entrar</button>
+                </div>
+            </form>
+        </div>       
+    </main>
+
+
+    <script src="/app-diesel/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="/app-diesel/assets/js/login.js"></script>   
+    <script src="/app-diesel/assets/js/script.js"></script>
+</body>
+</html>

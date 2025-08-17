@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compnent Header</title>
+
+    <link rel="stylesheet" href="/app-diesel/bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/app-diesel/assets/css/style.css">
+</head>
+<body>
+
+    <header id="app-header" class="d-flex justify-content-between align-items-center px-3">
+        <div class="d-flex align-items-center">
+             <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                <i class="fas fa-bars text-white"></i>
+            </button>
+            <h1 class="logo-text">Logo</h1>
+        </div>
+        <button class="btn btn-light"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+    </header>
+
+    <div class="main-container d-lg-flex">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+            <div class="offcanvas-header d-lg-none">
+                <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <aside class="sidebar-nav">
+                    <div class="sidebar-header d-flex align-items-center p-3">
+                        <div class="user-icon-wrapper me-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>Administrador</span>
+                    </div>
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" href="#">
+                            <i class="fas fa-wrench"></i> Ordens de Serviço
+                        </a>
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-users"></i> Clientes
+                        </a>
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user-friends"></i> Usuários
+                        </a>
+                        <a class="nav-link" href="#">
+                            <i class="fa-solid fa-box-open"></i> Produtos
+                        </a>
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-chart-bar"></i> Relatórios
+                        </a>
+                    </nav>
+                </aside>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/app-diesel/bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="/app-diesel/assets/js/login.js"></script>   
+    <script src="/app-diesel/assets/js/script.js"></script>
+</body>
+</html>
