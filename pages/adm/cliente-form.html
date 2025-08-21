@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Clientes</title>
+
+    <link rel="stylesheet" href="../../bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/forms.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+</head>
+<body>
+
+    <header id="app-header" class="d-flex justify-content-between align-items-center px-3">
+        <div class="d-flex align-items-center">
+              <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                  <i class="fas fa-bars text-white"></i>
+              </button>
+            <h1 class="logo-text">Logo</h1>
+        </div>
+        <button class="btn btn-light"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+    </header>
+
+    <div class="main-container d-lg-flex">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+            <div class="offcanvas-header d-lg-none">
+                <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <aside class="sidebar-nav">
+                    <div class="sidebar-header d-flex align-items-center p-3">
+                        <div class="user-icon-wrapper me-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>Administrador</span>
+                    </div>
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="#"><i class="fas fa-wrench"></i> Ordens de Serviço</a>
+                        <a class="nav-link active" href="#"><i class="fas fa-users"></i> Clientes</a>
+                        <a class="nav-link" href="#"><i class="fas fa-user-friends"></i> Usuários</a>
+                        <a class="nav-link" href="#"><i class="fa-solid fa-box-open"></i> Produtos</a>
+                        <a class="nav-link" href="#"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                    </nav>
+                </aside>
+            </div>
+        </div>
+        
+        <main class="main-content main-content-form">
+            <div class="form-card">
+                <h2 class="form-title">Cadastro de Clientes</h2>
+
+                <form id="form-cliente" action="/caminho/para/backend/cliente" method="POST">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cad_pro" class="form-label">CAD/PRO</label>
+                                <input type="text" class="form-control" id="cad_pro" name="cad_pro" inputmode="numeric" required>
+                            </div>
+                             <div class="mb-3">
+                                <label for="cep" class="form-label">CEP</label>
+                                <input type="text" class="form-control" id="cep" name="cep" inputmode="numeric" maxlength="9">
+                            </div>
+                            <div class="mb-3">
+                                <label for="complemento" class="form-label">Complemento</label>
+                                <input type="text" class="form-control" id="complemento" name="complemento">
+                            </div>
+                            <div class="mb-3">
+                                <label for="latitude" class="form-label">Latitude</label>
+                                <input type="text" class="form-control" id="latitude" name="latitude" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="cpf_cnpj" class="form-label">CPF/CNPJ</label>
+                                <input type="text" class="form-control" id="cpf_cnpj" name="cpf_cnpj" inputmode="numeric" maxlength="18" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-9 mb-3">
+                                    <label for="cidade" class="form-label">Cidade</label>
+                                    <input type="text" class="form-control" id="cidade" name="cidade" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="uf" class="form-label">UF</label>
+                                    <select class="form-select" id="uf" name="uf" required>
+                                        <option selected disabled value="">Selecione</option>
+                                        <option value="AC">AC</option>
+                                        <option value="AL">AL</option>
+                                        <option value="AP">AP</option>
+                                        <option value="AM">AM</option>
+                                        <option value="BA">BA</option>
+                                        <option value="CE">CE</option>
+                                        <option value="DF">DF</option>
+                                        <option value="ES">ES</option>
+                                        <option value="GO">GO</option>
+                                        <option value="MA">MA</option>
+                                        <option value="MT">MT</option>
+                                        <option value="MS">MS</option>
+                                        <option value="MG">MG</option>
+                                        <option value="PA">PA</option>
+                                        <option value="PB">PB</option>
+                                        <option value="PR">PR</option>
+                                        <option value="PE">PE</option>
+                                        <option value="PI">PI</option>
+                                        <option value="RJ">RJ</option>
+                                        <option value="RN">RN</option>
+                                        <option value="RS">RS</option>
+                                        <option value="RO">RO</option>
+                                        <option value="RR">RR</option>
+                                        <option value="SC">SC</option>
+                                        <option value="SP">SP</option>
+                                        <option value="SE">SE</option>
+                                        <option value="TO">TO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="numero" class="form-label">Número</label>
+                                <input type="text" class="form-control" id="numero" name="numero" inputmode="numeric" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="longitude" class="form-label">Longitude</label>
+                                <input type="text" class="form-control" id="longitude" name="longitude" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefone" class="form-label">Telefone/celular</label>
+                                <input type="tel" class="form-control" id="telefone" name="telefone" inputmode="numeric" maxlength="15" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-danger me-2">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+        </div>
+
+    <script src="../../bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/login.js"></script> 
+    <script src="../../assets/js/script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="../../assets/js/forms.js"></script>
