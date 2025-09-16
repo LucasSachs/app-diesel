@@ -317,38 +317,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const clientData = {
             nome: document.getElementById('nome').value,
             cpf_cnpj: document.getElementById('cpf_cnpj').value.replace(/\D/g, ''),
-            emails: Array.from(emailsContainer.querySelectorAll('input')).map(input => ({ descricao: input.value })),
-            telefones: Array.from(telefonesContainer.querySelectorAll('input')).map(input => ({ descricao: input.value.replace(/\D/g, '') })),
+            emails: Array.from(emailsContainer.querySelectorAll('input')).map(input => ({ descricao: input.value })).filter(e => e.descricao.trim() !== ''),
+            telefones: Array.from(telefonesContainer.querySelectorAll('input')).map(input => ({ descricao: input.value.replace(/\D/g, '') })).filter(t => t.descricao !== ''),
             propriedades: Array.from(propertiesContainer.querySelectorAll('.property-item')).map(item => {
-                const complementoValue = item.querySelector('[data-field="complemento"]').value;
-                const endereco = {
+                const enderecoRaw = {
                     cep: item.querySelector('[data-field="cep"]').value.replace(/\D/g, ''),
                     logradouro: item.querySelector('[data-field="logradouro"]').value,
                     numero: getNumericValue(item.querySelector('[data-field="numero"]')),
                     bairro: item.querySelector('[data-field="bairro"]').value,
-                    cidade: { descricao: item.querySelector('[data-field="cidade"]').value },
-                    uf: { descricao: item.querySelector('[data-field="uf"]').value },
+                    cidade: item.querySelector('[data-field="cidade"]').value,
+                    uf: item.querySelector('[data-field="uf"]').value,
                     lat: getNumericValue(item.querySelector('[data-field="lat"]')),
-                    long: getNumericValue(item.querySelector('[data-field="long"]'))
+                    long: getNumericValue(item.querySelector('[data-field="long"]')),
+                    complemento: item.querySelector('[data-field="complemento"]').value
                 };
-                if (complementoValue && complementoValue.trim() !== "") {
-                    endereco.complemento = complementoValue;
-                } else {
-                    endereco.complemento = null; // ou simplesmente não adiciona a linha para não enviar
-                }
-                const property = {
-                    cadpro: item.querySelector('[data-field="cadpro"]').value.replace(/\D/g, ''),
-                    endereco
-                };
-                if (item.dataset.propertyId) {
-                    property.id = parseInt(item.dataset.propertyId, 10);
-                }
-                if (item.dataset.addressId) {
-                    property.endereco.id = parseInt(item.dataset.addressId, 10);
-                }
+
+                const endereco = {};
+                Object.entries(enderecoRaw).forEach(([key, value]) => {
+                    if (value !== null && value !== undefined && String(value).trim() !== '' && !Number.isNaN(value)) {
+                        if (key === 'cidade' || key === 'uf') endereco[key] = { descricao: value };
+                        else endereco[key] = value;
+                    }
+                });
+
+                const property = { cadpro: item.querySelector('[data-field="cadpro"]').value.replace(/\D/g, '')};
+
+                if (Object.keys(endereco).length > 0) property.endereco = endereco;
+                if (item.dataset.propertyId) property.id = parseInt(item.dataset.propertyId, 10);
+                if (item.dataset.addressId && property.endereco) property.endereco.id = parseInt(item.dataset.addressId, 10);
+
                 return property;
             })
         };
+
+        console.log(clientData)
 
         const method = isEditMode ? 'PUT' : 'POST';
         const url = '/cliente';
