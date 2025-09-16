@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const fetchAddressFromViaCEP = async (cep) => {
-        if (!cep || cep.replace(/\D/g, '').length !== 8) return { logradouro: 'Não informado', bairro: 'Não informado' };
+        if (!cep || cep.replace(/\D/g, '').length !== 8) return { logradouro: '-', bairro: '-' };
         try {
             const response = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`);
             const data = await response.json();
@@ -90,9 +90,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 clone.querySelector('.prop-numero').textContent = prop.endereco.numero || '-';
                 clone.querySelector('.prop-complemento').textContent = prop.endereco.complemento || '-';
                 clone.querySelector('.prop-bairro').textContent = viaCepData.bairro || prop.endereco.bairro || '-';
-                clone.querySelector('.prop-cidade').textContent = prop.endereco.cidade.descricao || '-';
-                clone.querySelector('.prop-uf').textContent = prop.endereco.uf.descricao || '-';
-                clone.querySelector('.prop-cep').textContent = formatCep(prop.endereco.cep) || '-';
+                clone.querySelector('.prop-cidade').textContent = prop.endereco.cidade?.descricao || '-';
+                clone.querySelector('.prop-uf').textContent = prop.endereco.uf?.descricao || '-';
+                clone.querySelector('.prop-cep').textContent = prop.endereco.cep ? formatCep(prop.endereco.cep) : '-';
                 clone.querySelector('.prop-lat').textContent = prop.endereco.lat || '-';
                 clone.querySelector('.prop-long').textContent = prop.endereco.long || '-';
                 propertiesList.appendChild(clone);
