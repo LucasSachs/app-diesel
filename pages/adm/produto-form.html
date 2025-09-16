@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produto</title>
+
+    <link rel="stylesheet" href="../../bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/forms.css">
+</head>
+<body>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/menu.js"></script>
+    
+    <header id="app-header" class="d-flex justify-content-between align-items-center px-3">
+        <div class="d-flex align-items-center">
+            <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                <i class="fas fa-bars text-white"></i>
+            </button>
+            <h1 class="logo-text">Logo</h1>
+        </div>
+        <button class="btn btn-light" onclick="logout()"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+    </header>
+
+    <div class="main-container d-lg-flex">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+            <div class="offcanvas-header d-lg-none">
+                <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <aside class="sidebar-nav">
+                    <div class="sidebar-header d-flex align-items-center p-3">
+                        <div class="user-icon-wrapper me-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span id="user-name-display">Usuário</span>
+                    </div>
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="tabela-os.html"><i class="fas fa-wrench"></i> Ordens de Serviço</a>
+                        <a class="nav-link" href="tabela-cliente.html"><i class="fas fa-users"></i> Clientes</a>
+                        <a class="nav-link" href="tabela-user.html"><i class="fas fa-user-friends"></i> Usuários</a>
+                        <a class="nav-link active" href="tabela-produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a>
+                        <a class="nav-link" href="tabela-servico.html"><i class="fa-solid fa-gear"></i> Serviços</a>
+                        <a class="nav-link" href="tabela-relatorio.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                    </nav>
+                </aside>
+            </div>
+        </div>
+        
+        <main class="main-content main-content-form">
+            <div class="form-card">
+                <h2 class="form-title" id="form-title">Cadastro de Produto</h2>
+
+                <form id="product-form" novalidate>
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome do Produto</label>
+                        <input type="text" class="form-control" id="nome" required minlength="3" maxlength="255">
+                        <div class="invalid-feedback">O nome do produto é obrigatório (mínimo 3 caracteres).</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="descricao" rows="3" maxlength="512" minlength="3"></textarea>
+                        <div class="invalid-feedback">A descrição, se preenchida, deve ter no mínimo 3 caracteres.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="valor" class="form-label">Valor (R$)</label>
+                        <input type="text" class="form-control" id="valor" required inputmode="decimal" placeholder="0,00">
+                        <div class="invalid-feedback">Informe um valor válido (ex.: 199,90).</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tamanho_tanque" class="form-label">Tamanho do Tanque (Litros)</label>
+                        <input type="number" class="form-control" id="tamanho_tanque" min="0" placeholder="Opcional">
+                    </div>
+
+                    <div id="form-message" class="mt-3"></div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-danger me-2" id="btn-cancelar">Cancelar</button>
+                        <button type="submit" class="btn btn-success" id="save-button">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/login.js"></script> 
+    <script src="../../assets/js/produto-form.js"></script>
+    <script src="../../assets/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="../../assets/js/forms.js"></script>
+</body>
+</html>

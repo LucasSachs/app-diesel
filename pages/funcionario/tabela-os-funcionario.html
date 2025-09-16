@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordens de Serviço</title>
+
+    <!-- Frameworks e Bibliotecas -->
+    <link rel="stylesheet" href="../../bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Seus arquivos de CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/forms.css">
+    <link rel="stylesheet" href="../../assets/css/tabelas.css">
+
+</head>
+<body>
+
+    <header id="app-header" class="d-flex justify-content-between align-items-center px-3">
+        <div class="d-flex align-items-center">
+              <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                  <i class="fas fa-bars text-white"></i>
+              </button>
+            <h1 class="logo-text">Logo</h1>
+        </div>
+        <button class="btn btn-light"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+    </header>
+
+    <div class="main-container d-lg-flex">
+        <!-- Sidebar -->
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+            <div class="offcanvas-header d-lg-none">
+                <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <aside class="sidebar-nav">
+                    <div class="sidebar-header d-flex align-items-center p-3">
+                        <div class="user-icon-wrapper me-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span id="user-name-display">Funcionário</span>
+                    </div>
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" href="#"><i class="fas fa-wrench"></i> Ordens de Serviço</a>
+                    </nav>
+                </aside>
+            </div>
+        </div>
+        
+        <!-- Conteúdo Principal com a nova estrutura -->
+        <main class="main-content main-content-form">
+            <div class="form-card">
+                <!-- Cabeçalho da Página -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="form-title">Ordens de Serviço</h2>
+                </div>
+
+                <!-- Barra de Filtros -->
+                <div class="filter-bar d-flex flex-wrap gap-2 align-items-center mb-3 p-3 bg-light rounded">
+                    <div class="input-group flex-grow-1">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Pesquise por serviço, responsável ou data...">
+                    </div>
+                    <div class="input-group" style="min-width: 180px;">
+                        <label class="input-group-text" for="filterStatus">Filtrar por</label>
+                        <select class="form-select" id="filterStatus">
+                            <option value="todos" selected>Todos</option>
+                            <option value="Em andamento">Em andamento</option>
+                            <option value="Concluído">Concluído</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="min-width: 180px;">
+                        <label class="input-group-text" for="sortOrder">Ordenar por</label>
+                        <select class="form-select" id="sortOrder">
+                            <option value="data-desc">Mais Recentes</option>
+                            <option value="data-asc">Mais Antigos</option>
+                            <option value="servico-asc">Serviço (A-Z)</option>
+                            <option value="responsavel-asc">Responsável (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabela de Dados -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Serviço</th>
+                                <th>Responsável</th>
+                                <th>Situação</th>
+                                <th>Data</th>
+                                <th class="text-end"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="osTableBody">
+                            <!-- Conteúdo gerado via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginação -->
+                <nav class="d-flex justify-content-center mt-4">
+                    <ul class="pagination" id="pagination">
+                        <!-- Conteúdo gerado via JS -->
+                    </ul>
+                </nav>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/menu.js"></script>
+    <script src="../../bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/forms.js"></script>
+    <script src="../../assets/js/tabelas.js"></script>
+</body>
+</html>

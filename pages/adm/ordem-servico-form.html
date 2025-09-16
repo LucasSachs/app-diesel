@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criação de Ordem de Serviço</title>
+    <title>Cadastro de Ordem de Serviço</title>
 
     <link rel="stylesheet" href="../../bootstrap5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../../assets/css/forms.css">
-
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/forms.css">
 </head>
 <body>
 
     <header id="app-header" class="d-flex justify-content-between align-items-center px-3">
         <div class="d-flex align-items-center">
-             <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
-                 <i class="fas fa-bars text-white"></i>
-             </button>
-            <h1 class="logo-text">Logo</h1>
-        </div>
-        <button class="btn btn-light"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+            <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                <i class="fas fa-bars text-white"></i>
+            </button>
+          <h1 class="logo-text">Logo</h1>
+      </div>
+      <button class="btn btn-light"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
     </header>
 
     <div class="main-container d-lg-flex">
@@ -38,14 +36,15 @@
                         <div class="user-icon-wrapper me-3">
                             <i class="fas fa-user"></i>
                         </div>
-                        <span>Administrador</span>
+                        <span id="user-name-display">Administrador</span>
                     </div>
                     <nav class="nav flex-column">
-                        <a class="nav-link active" href="#"><i class="fas fa-wrench"></i> Ordens de Serviço</a>
-                        <a class="nav-link" href="#"><i class="fas fa-users"></i> Clientes</a>
-                        <a class="nav-link" href="#"><i class="fas fa-user-friends"></i> Usuários</a>
-                        <a class="nav-link" href="#"><i class="fa-solid fa-box-open"></i> Produtos</a>
-                        <a class="nav-link" href="#"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                        <a class="nav-link active" href="tabela-os.html"><i class="fas fa-wrench"></i> Ordens de Serviço</a>
+                        <a class="nav-link" href="tabela-cliente.html"><i class="fas fa-users"></i> Clientes</a>
+                        <a class="nav-link" href="tabela-user.html"><i class="fas fa-user-friends"></i> Usuários</a>
+                        <a class="nav-link" href="tabela-produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a>
+                        <a class="nav-link" href="tabela-servico.html"><i class="fa-solid fa-gear"></i> Serviços</a>
+                        <a class="nav-link" href="tabela-relatorio.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
                     </nav>
                 </aside>
             </div>
@@ -53,135 +52,174 @@
         
         <main class="main-content main-content-form">
             <div class="form-card">
-                <h2 class="form-title">Criação de Ordem de Serviço</h2>
-
-                <form id="form-os" action="/caminho/para/backend" method="POST">
+                <h2 id="form-title" class="form-title">Nova Ordem de Serviço</h2>
+                <form id="os-form">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <label for="cliente" class="form-label">Cliente</label>
-                            <div class="input-group mb-3">
-                                <select class="form-select" id="cliente" name="cliente_id" required>
-                                    <option selected disabled value="">Selecione...</option>
-                                    <option value="1">Cliente Exemplo 1</option>
-                                    <option value="2">Cliente Exemplo 2</option>
-                                </select>
-                                <button class="btn btn-success" type="button" title="Adicionar Novo Cliente">+</button>
-                            </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cliente-propriedade" class="form-label d-flex justify-content-between align-items-center">
+                                <span>Cliente / Propriedade</span>
+                                <a href="cliente-form.html" target="_blank" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-plus"></i> Criar Novo Cliente
+                                </a>
+                            </label>
+                            <select id="cliente-propriedade" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                             <label for="responsavel" class="form-label d-flex justify-content-between align-items-center">
+                                <span>Responsáveis</span>
+                                <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#create-user-modal">
+                                    <i class="fas fa-plus"></i> Criar Novo Usuário
+                                </button>
+                            </label>
+                            <select id="responsavel" class="form-select" multiple="multiple" required></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" class="form-select" required>
+                                <option value="Em andamento">Em andamento</option>
+                                <option value="Concluida">Concluída</option>
+                                <!-- <option value="Cancelado">Cancelado</option> -->
+                            </select>
+                        </div>
+                    </div>
 
-                            <label for="produtos" class="form-label">Produto(s)</label>
-                            <div class="input-group mb-3">
-                                <select class="form-select" id="produtos" name="produtos[]" multiple="multiple">
-                                    <option value="101">Produto A</option>
-                                    <option value="102">Produto B</option>
-                                    <option value="103">Produto C - Peça de Reposição</option>
-                                    <option value="104">Produto D - Material de Consumo</option>
-                                </select>
-                                <button class="btn btn-success" type="button" title="Adicionar Novo Produto">+</button>
-                            </div>
+                    <div class="mb-4">
+                        <label for="servicos-select" class="form-label d-flex justify-content-between align-items-center">
+                            <h5>Serviços Prestados</h5>
+                            <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#create-service-modal" title="Criar Novo Serviço">
+                                <i class="fas fa-plus"></i> Criar Novo Serviço
+                            </button>
+                        </label>
+                        <select id="servicos-select" class="form-select" multiple="multiple"></select>
+                    </div>
 
-                            <label for="responsavel" class="form-label">Responsável</label>
-                            <div class="input-group mb-3">
-                                <select class="form-select" id="responsavel" name="responsavel_id" required>
-                                    <option selected disabled value="">Selecione...</option>
-                                    <option value="1">Técnico João</option>
-                                    <option value="2">Técnico Maria</option>
-                                </select>
-                                <button class="btn btn-success" type="button" title="Adicionar Novo Responsável">+</button>
-                            </div>
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição / Anotações</label>
+                        <textarea id="descricao" class="form-control" rows="4" placeholder="Observações gerais sobre a OS"></textarea>
+                    </div>
 
-                            <div class="mb-3">
-                                <label for="situacao" class="form-label">Situação</label>
-                                <select class="form-select" id="situacao" name="situacao" required>
-                                    <option value="aberto" selected>Em Aberto</option>
-                                    <option value="andamento">Em Andamento</option>
-                                    <option value="aguardando_peca">Aguardando Peça</option>
-                                    <option value="finalizado">Finalizado</option>
-                                    <option value="cancelado">Cancelado</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="prazo_pagamento" class="form-label">Prazo para pagamento</label>
-                                <select class="form-select" id="prazo_pagamento" name="prazo_pagamento">
-                                    <option value="avista">À vista</option>
-                                    <option value="7dias">7 dias</option>
-                                    <option value="15dias">15 dias</option>
-                                    <option value="30dias">30 dias</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="servicos" class="form-label">Serviços</label>
-                                <textarea class="form-control" id="servicos" name="servicos" rows="4"></textarea>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5>Produtos Utilizados</h5>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="add-product-btn">
+                                    <i class="fas fa-plus me-1"></i> Adicionar Produto
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#create-product-modal">
+                                    <i class="fas fa-box-open me-1"></i> Criar Novo Produto
+                                </button>
                             </div>
                         </div>
+                        <div id="produtos-container" class="border p-3 rounded">
+                            <!-- Linhas de produtos são adicionadas aqui -->
+                        </div>
+                    </div>
 
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="mao_obra" class="form-label">Mão de obra</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">R$</span>
-                                    <input type="number" class="form-control" id="mao_obra" name="mao_obra" placeholder="0,00" step="0.01">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="deslocamento" class="form-label">Deslocamento</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" id="deslocamento" name="deslocamento" placeholder="0" step="1">
-                                    <span class="input-group-text">km</span>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="valor_km" class="form-label">Valor por km</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">R$</span>
-                                    <input type="number" class="form-control" id="valor_km" name="valor_km" placeholder="0,00" step="0.01">
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="total_servico" class="form-label fw-bold">Total do Serviço</label>
-                                <div class="input-group">
-                                    <span class="input-group-text fw-bold">R$</span>
-                                    <input type="text" class="form-control fw-bold" id="total_servico" name="total_servico" value="0,00" readonly>
-                                </div>
-                            </div>
-
-                             <div class="mb-3">
-                                <label for="metodo_pagamento" class="form-label">Método de Pagamento</label>
-                                <select class="form-select" id="metodo_pagamento" name="metodo_pagamento">
-                                    <option value="dinheiro">Dinheiro</option>
-                                    <option value="pix">PIX</option>
-                                    <option value="cartao_credito">Cartão de Crédito</option>
-                                    <option value="cartao_debito">Cartão de Débito</option>
-                                    <option value="boleto">Boleto Bancário</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="descricao" class="form-label">Descrição</label>
-                                <textarea class="form-control" id="descricao" name="descricao" rows="5"></textarea>
+                    <div class="row align-items-end">
+                         <div class="col-md-4 mb-3">
+                            <label for="valor-mo" class="form-label">Valor Mão de Obra (R$)</label>
+                            <input type="text" id="valor-mo" class="form-control money">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="valor-deslocamento" class="form-label">Valor Deslocamento (R$)</label>
+                            <input type="text" id="valor-deslocamento" class="form-control money">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="total-display p-3 bg-light rounded text-center">
+                                <h5 class="mb-0">VALOR TOTAL</h5>
+                                <p id="total-value" class="h3 text-success mb-0">R$ 0,00</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-end mt-4">
-                        <button type="button" class="btn btn-danger me-2">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Avançar</button>
+                        <button type="button" class="btn btn-danger me-2" id="btn-cancelar">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Salvar</button>
                     </div>
                 </form>
             </div>
         </main>
+    </div>
+
+    <!-- Modais -->
+    
+    <!-- Modal de Usuário (Responsável) -->
+    <div class="modal fade" id="create-user-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Cadastro de Usuário</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form id="new-user-form">
+                         <div class="row">
+                            <div class="col-md-4 mb-3"><label for="new-user-nome" class="form-label">Nome Completo</label><input type="text" id="new-user-nome" class="form-control" required></div>
+                            <div class="col-md-4 mb-3"><label for="new-user-cpf" class="form-label">CPF</label><input type="text" id="new-user-cpf" class="form-control cpf" required></div>
+                             <div class="col-md-4 mb-3"><label for="new-user-rg" class="form-label">RG</label><input type="text" id="new-user-rg" class="form-control"></div>
+                        </div>
+                         <div class="row">
+                            <div class="col-md-6 mb-3"><label for="new-user-email" class="form-label">Email</label><input type="email" id="new-user-email" class="form-control" required></div>
+                            <div class="col-md-6 mb-3"><label for="new-user-nascimento" class="form-label">Data de Nascimento</label><input type="date" id="new-user-nascimento" class="form-control"></div>
+                        </div>
+                         <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="new-user-cargo" class="form-label">Cargo</label>
+                                <select id="new-user-cargo" class="form-select" required>
+                                    <option value="colaborador">Colaborador</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3"><label for="new-user-status" class="form-label">Status</label><select id="new-user-status" class="form-select" required><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-success" id="save-new-user-btn">Salvar</button></div>
+            </div>
         </div>
+    </div>
+    
+    <!-- Modal de Serviço -->
+    <div class="modal fade" id="create-service-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Criar Novo Serviço</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form id="new-service-form">
+                        <div class="mb-3"><label for="new-service-nome" class="form-label">Nome do Serviço</label><input type="text" id="new-service-nome" class="form-control" required></div>
+                        <div class="mb-3"><label for="new-service-descricao" class="form-label">Descrição</label><textarea id="new-service-descricao" class="form-control" rows="3"></textarea></div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-success" id="save-new-service-btn">Salvar</button></div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Modal de Produto -->
+    <div class="modal fade" id="create-product-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Criar Novo Produto</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <form id="new-product-form">
+                        <div class="mb-3"><label for="new-product-nome" class="form-label">Nome do Produto</label><input type="text" id="new-product-nome" class="form-control" required></div>
+                        <div class="mb-3"><label for="new-product-descricao" class="form-label">Descrição</label><textarea id="new-product-descricao" class="form-control" rows="3"></textarea></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3"><label for="new-product-tamanho" class="form-label">Tamanho do Tanque (Litros)</label><input type="number" id="new-product-tamanho" class="form-control" min="0" step="any"></div>
+                            <div class="col-md-6 mb-3"><label for="new-product-valor" class="form-label">Valor Unitário (R$)</label><input type="text" id="new-product-valor" class="form-control money" required></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-success" id="save-new-product-btn">Salvar</button></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/menu.js"></script>
     <script src="../../bootstrap5/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/login.js"></script> 
-    <script src="../../assets/js/script.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="../../assets/js/forms.js"></script>
+    <script src="../../assets/js/ordem-servico-form.js"></script>
 </body>
 </html>
+

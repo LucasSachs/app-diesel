@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Produto</title>
+
+    <link rel="stylesheet" href="../../bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/forms.css">
+</head>
+<body>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/menu.js"></script>
+
+    <header id="app-header" class="d-flex justify-content-between align-items-center px-3">
+        <div class="d-flex align-items-center">
+            <button class="btn d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                <i class="fas fa-bars text-white"></i>
+            </button>
+            <h1 class="logo-text">Logo</h1>
+        </div>
+        <button class="btn btn-light" onclick="logout()"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+    </header>
+
+    <div class="main-container d-lg-flex">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+            <div class="offcanvas-header d-lg-none">
+                <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <aside class="sidebar-nav">
+                    <div class="sidebar-header d-flex align-items-center p-3">
+                        <div class="user-icon-wrapper me-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span id="user-name-display">Usuário</span>
+                    </div>
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="tabela-os.html"><i class="fas fa-wrench"></i> Ordens de Serviço</a>
+                        <a class="nav-link" href="tabela-cliente.html"><i class="fas fa-users"></i> Clientes</a>
+                        <a class="nav-link" href="tabela-user.html"><i class="fas fa-user-friends"></i> Usuários</a>
+                        <a class="nav-link active" href="tabela-produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a>
+                        <a class="nav-link" href="tabela-servico.html"><i class="fa-solid fa-gear"></i> Serviços</a>
+                        <a class="nav-link" href="tabela-relatorio.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                    </nav>
+                </aside>
+            </div>
+        </div>
+        
+        <main class="main-content main-content-form">
+            <div class="form-card">
+                <h2 class="form-title">Detalhes do Produto</h2>
+
+                <div id="details-loading" class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+
+                <div id="details-container" class="details-container" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <strong class="detail-label">Nome do Produto:</strong>
+                            <p id="detail-nome">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <strong class="detail-label">Descrição:</strong>
+                            <p id="detail-descricao">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <strong class="detail-label">Tamanho do Tanque:</strong>
+                            <p id="detail-tamanho-tanque">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <strong class="detail-label">Valor:</strong>
+                            <p id="detail-valor">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="tabela-produto.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Voltar
+                    </a>
+                    <button type="button" class="btn btn-warning ms-2" id="btn-editar">
+                        <i class="fas fa-pencil-alt me-1"></i> Editar
+                    </button>
+                    <button type="button" class="btn btn-danger ms-2" id="btn-excluir">
+                        <i class="fas fa-trash-alt me-1"></i> Excluir
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/produto-detalhes.js"></script>
+    <script src="../../assets/js/produto-form.js"></script>
+</body>
+</html>
+
