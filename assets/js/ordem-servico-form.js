@@ -171,10 +171,37 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         // Produtos
-    const createProductRow = () => {
+        const addProductHeader = () => {
+            if (!produtosContainer.querySelector('.produto-header')) {
+                const header = document.createElement('div');
+                header.className = 'row g-2 mb-2 produto-header';
+                header.innerHTML = `
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold mb-0">Produto</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold mb-0">Quantidade</label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold mb-0">Valor Unitário</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold mb-0">Subtotal</label>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                `;
+                produtosContainer.insertBefore(header, produtosContainer.firstChild);
+            }
+        };
+
+        const createProductRow = () => {
             if(produtosContainer.querySelector('#no-product-message')) {
                  produtosContainer.innerHTML = '';
             }
+
+            // Adiciona o cabeçalho se não existir
+            addProductHeader();
 
             const rowId = `produto-row-${Date.now()}`;
             const div = document.createElement('div');
@@ -189,13 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input type="number" class="form-control produto-quantidade" placeholder="Qtd." min="0" step="0.001">
+                    <input type="number" class="form-control produto-quantidade" placeholder="Ex: 10" min="0" step="0.001">
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control produto-valor money" placeholder="Valor Unit. (R$)">
+                    <input type="text" class="form-control produto-valor money" placeholder="Ex: 50,00">
                 </div>
                 <div class="col-md-2">
-                     <input type="text" class="form-control produto-subtotal" placeholder="Subtotal" disabled>
+                     <input type="text" class="form-control produto-subtotal" placeholder="R$ 0,00" disabled>
                 </div>
                 <div class="col-md-1 text-end">
                     <button type="button" class="btn btn-sm btn-danger remove-product-btn"><i class="fas fa-trash"></i></button>
@@ -266,6 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target.closest('.remove-product-btn')) {
                 e.target.closest('.produto-row').remove();
                 if (produtosContainer.querySelectorAll('.produto-row').length === 0) {
+                     // Remove o cabeçalho também
+                     const header = produtosContainer.querySelector('.produto-header');
+                     if (header) header.remove();
                      produtosContainer.innerHTML = '<div id="no-product-message" class="text-center text-muted">Nenhum produto adicionado.</div>';
                 }
                 calculateTotal();

@@ -163,6 +163,32 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.value = value;
     };
 
+    const addEmailHeader = () => {
+        if (!emailsContainer.querySelector('.email-header')) {
+            const header = document.createElement('div');
+            header.className = 'row g-2 mb-2 email-header';
+            header.innerHTML = `
+                <div class="col">
+                    <label class="form-label fw-bold mb-0">E-mail(s)</label>
+                </div>
+            `;
+            emailsContainer.insertBefore(header, emailsContainer.firstChild);
+        }
+    };
+
+    const addTelefoneHeader = () => {
+        if (!telefonesContainer.querySelector('.telefone-header')) {
+            const header = document.createElement('div');
+            header.className = 'row g-2 mb-2 telefone-header';
+            header.innerHTML = `
+                <div class="col">
+                    <label class="form-label fw-bold mb-0">Telefone(s)</label>
+                </div>
+            `;
+            telefonesContainer.insertBefore(header, telefonesContainer.firstChild);
+        }
+    };
+
     // campos dinâmicos
     const addField = (template, container) => {
         const clone = template.content.cloneNode(true);
@@ -207,8 +233,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return newItem;
     };
 
-    addEmailBtn.addEventListener('click', () => addField(emailTemplate, emailsContainer));
+    addEmailBtn.addEventListener('click', () => {
+        addEmailHeader();
+        addField(emailTemplate, emailsContainer);
+    });
     addTelefoneBtn.addEventListener('click', () => {
+        addTelefoneHeader();
         const newField = addField(telefoneTemplate, telefonesContainer);
         const input = newField.querySelector('input');
         input.addEventListener('input', handleTelefoneInput);
@@ -217,7 +247,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('click', (e) => {
         if (e.target.closest('.remove-field-btn')) {
-            e.target.closest('.dynamic-field').remove();
+            const field = e.target.closest('.dynamic-field');
+            const container = field.parentElement;
+            field.remove();
+            
+            // Remove o cabeçalho se não houver mais campos
+            if (container.id === 'emails-container' && !container.querySelector('.dynamic-field')) {
+                const header = container.querySelector('.email-header');
+                if (header) header.remove();
+            }
+            if (container.id === 'telefones-container' && !container.querySelector('.dynamic-field')) {
+                const header = container.querySelector('.telefone-header');
+                if (header) header.remove();
+            }
         }
         if (e.target.closest('.remove-property-btn')) {
             e.target.closest('.property-item').remove();
@@ -252,7 +294,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadClientData = async () => {
         if (!isEditMode) {
+            addEmailHeader();
             addField(emailTemplate, emailsContainer);
+            addTelefoneHeader();
             const newPhoneField = addField(telefoneTemplate, telefonesContainer);
             newPhoneField.querySelector('input').addEventListener('input', handleTelefoneInput);
             addProperty();
@@ -276,18 +320,24 @@ document.addEventListener('DOMContentLoaded', () => {
             telefonesContainer.innerHTML = '';
             propertiesContainer.innerHTML = '';
             
-            client.emails?.forEach(email => {
-                const newField = addField(emailTemplate, emailsContainer);
-                newField.querySelector('input').value = email.descricao;
-            });
+            if (client.emails && client.emails.length > 0) {
+                addEmailHeader();
+                client.emails.forEach(email => {
+                    const newField = addField(emailTemplate, emailsContainer);
+                    newField.querySelector('input').value = email.descricao;
+                });
+            }
 
-            client.telefones?.forEach(telefone => {
-                const newField = addField(telefoneTemplate, telefonesContainer);
-                const input = newField.querySelector('input');
-                input.value = telefone.descricao;
-                input.addEventListener('input', handleTelefoneInput);
-                input.dispatchEvent(new Event('input'));
-            });
+            if (client.telefones && client.telefones.length > 0) {
+                addTelefoneHeader();
+                client.telefones.forEach(telefone => {
+                    const newField = addField(telefoneTemplate, telefonesContainer);
+                    const input = newField.querySelector('input');
+                    input.value = telefone.descricao;
+                    input.addEventListener('input', handleTelefoneInput);
+                    input.dispatchEvent(new Event('input'));
+                });
+            }
 
             for (const prop of client.propriedades) {
                 try {
@@ -369,9 +419,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 formMessage.innerHTML = `<div class="alert alert-success">Cliente salvo com sucesso!</div>`;
                 localStorage.setItem('clienteAtualizado', 'true');
                 setTimeout(() => {
-                    window.close();
-                    window.location.href = 'tabela-cliente.html';
-             }, 1000);
+                    if (isEditMode) {
+                        window.location.href = `cliente-detalhes.html?id=${result.id || clientId}`;
+                    } else {
+                        window.location.href = 'tabela-cliente.html';
+                    }
+                }, 1000);
 
             } else {
                 const errorMessage = Array.isArray(result.message) ? result.message.join('<br>') : (result.message || 'Erro desconhecido.');

@@ -587,12 +587,53 @@ document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.getElementById('os-table-body');
         const searchInput = document.getElementById('search-input');
         const statusFilter = document.getElementById('filter-status');
+        const dateFilter = document.getElementById('filter-date');
+        const customDateGroup = document.getElementById('custom-date-group');
+        const customDateInput = document.getElementById('custom-date');
         const sortSelect = document.getElementById('sort-select');
         const paginationControls = document.getElementById('pagination-controls');
         const resultsInfo = document.getElementById('results-info');
         const paginationList = document.getElementById('pagination-list');
         const loadingIndicator = document.getElementById('loading-indicator');
         const noResults = document.getElementById('no-results');
+
+        // Função para gerar data no formato ISO com timezone
+        const getDateWithTimezone = (date) => {
+            return date.toISOString();
+        };
+
+        // Função para calcular data baseada no filtro selecionado
+        const getFilterDate = (filterValue, customDate = null) => {
+            const now = new Date();
+            let filterDate;
+
+            switch (filterValue) {
+                case 'hoje':
+                    filterDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    break;
+                case 'ontem':
+                    filterDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                    break;
+                case 'semana':
+                    filterDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'mes':
+                    filterDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                    break;
+                case 'tres-meses':
+                    filterDate = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+                    break;
+                case 'personalizada':
+                    if (customDate) {
+                        filterDate = new Date(customDate);
+                    }
+                    break;
+                default:
+                    return null;
+            }
+            
+            return filterDate ? getDateWithTimezone(filterDate) : null;
+        };
 
         const formatDate = (dateString) => {
             if (!dateString) return '-';
@@ -675,6 +716,19 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         const applyFiltersAndSort = () => {
+            // Se há filtro de data ativo, buscar novamente do backend
+            const dateFilterValue = dateFilter.value;
+            if (dateFilterValue !== 'todas') {
+                const customDate = dateFilterValue === 'personalizada' ? customDateInput.value : null;
+                const filterDate = getFilterDate(dateFilterValue, customDate);
+                
+                if (filterDate) {
+                    fetchOs(filterDate);
+                    return; // A função fetchOs já vai aplicar os outros filtros
+                }
+            }
+
+            // Aplicar filtros locais quando não há filtro de data
             let tempOs = [...allOs];
             const searchTerm = searchInput.value.toLowerCase();
             const status = statusFilter.value;
@@ -717,15 +771,67 @@ document.addEventListener('DOMContentLoaded', () => {
             renderTablePage();
         };
 
-        const fetchOs = async () => {
+        const fetchOs = async (dateFilter = null) => {
             if (loadingIndicator) loadingIndicator.style.display = 'table-row';
             if(tableBody) tableBody.innerHTML = '';
             if(noResults) noResults.style.display = 'none';
             try {
-                const response = await authenticatedFetch('/ordem-servico');
+                let url = '/ordem-servico';
+                
+                if (dateFilter === null) {
+                    const oneMonthAgo = new Date();
+                    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+                    dateFilter = getDateWithTimezone(oneMonthAgo);
+                }
+                
+                if (dateFilter) {
+                    url += `?date=${encodeURIComponent(dateFilter)}`;
+                }
+                
+                const response = await authenticatedFetch(url);
                 if (!response.ok) throw new Error('Falha ao carregar ordens de serviço.');
                 allOs = await response.json();
-                applyFiltersAndSort();
+                
+                let tempOs = [...allOs];
+                const searchTerm = searchInput.value.toLowerCase();
+                const status = statusFilter.value;
+                const [sortColumn, sortDirection] = sortSelect.value.split('-');
+
+                if (searchTerm) {
+                    tempOs = tempOs.filter(os => {
+                        const servicosStr = (os.servicos && os.servicos.length) ? os.servicos.map(s => s.nome).join(', ').toLowerCase() : '';
+                        const clienteStr = os.propriedade?.cliente?.nome ? os.propriedade.cliente.nome.toLowerCase() : '';
+                        const usuariosStr = (os.usuarios && os.usuarios.length) ? os.usuarios.map(u => u.nome).join(', ').toLowerCase() : '';
+                        const dataStr = formatDate(os.created_at);
+                        return servicosStr.includes(searchTerm) || clienteStr.includes(searchTerm) || usuariosStr.includes(searchTerm) || dataStr.includes(searchTerm);
+                    });
+                }
+                if (status && status !== 'todos') {
+                    tempOs = tempOs.filter(os => os.status === status);
+                }
+
+                tempOs.sort((a, b) => {
+                    if (sortColumn === 'data_abertura') {
+                        const aDate = new Date(a.created_at);
+                        const bDate = new Date(b.created_at);
+                        return sortDirection === 'asc' ? aDate - bDate : bDate - aDate;
+                    }
+                    if (sortColumn === 'servico') {
+                        const aServ = (a.servicos && a.servicos.length) ? a.servicos[0].nome : '';
+                        const bServ = (b.servicos && b.servicos.length) ? b.servicos[0].nome : '';
+                        return sortDirection === 'asc' ? aServ.localeCompare(bServ) : bServ.localeCompare(aServ);
+                    }
+                    if (sortColumn === 'responsavel') {
+                        const aUser = (a.usuarios && a.usuarios.length) ? a.usuarios[0].nome : '';
+                        const bUser = (b.usuarios && b.usuarios.length) ? b.usuarios[0].nome : '';
+                        return sortDirection === 'asc' ? aUser.localeCompare(bUser) : bUser.localeCompare(aUser);
+                    }
+                    return 0;
+                });
+                
+                filteredOs = tempOs;
+                currentPage = 1;
+                renderTablePage();
             } catch (error) {
                 console.error("Erro ao buscar ordens de serviço:", error);
                 tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
@@ -734,9 +840,302 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         
+        // Event listeners para os filtros
         searchInput.addEventListener('input', applyFiltersAndSort);
         statusFilter.addEventListener('change', applyFiltersAndSort);
         sortSelect.addEventListener('change', applyFiltersAndSort);
+        dateFilter.addEventListener('change', (e) => {
+            if (e.target.value === 'personalizada') {
+                customDateGroup.classList.remove('d-none');
+                // Remove listener anterior para evitar duplicação
+                customDateInput.removeEventListener('change', applyFiltersAndSort);
+                customDateInput.addEventListener('change', applyFiltersAndSort);
+            } else {
+                customDateGroup.classList.add('d-none');
+                applyFiltersAndSort();
+            }
+        });
+
+        fetchOs();
+    }
+
+    // Tabela de OS - Funcionário
+    if (window.location.pathname.includes('tabela-os-funcionario.html')) {
+        let allOs = [];
+        let filteredOs = [];
+        let currentPage = 1;
+        const rowsPerPage = 10;
+
+        const tableBody = document.getElementById('os-table-body');
+        const searchInput = document.getElementById('search-input');
+        const statusFilter = document.getElementById('filter-status');
+        const dateFilter = document.getElementById('filter-date');
+        const customDateGroup = document.getElementById('custom-date-group');
+        const customDateInput = document.getElementById('custom-date');
+        const sortSelect = document.getElementById('sort-select');
+        const paginationControls = document.getElementById('pagination-controls');
+        const resultsInfo = document.getElementById('results-info');
+        const paginationList = document.getElementById('pagination-list');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const noResults = document.getElementById('no-results');
+
+        // Pega o ID do usuário logado
+        const getUserId = () => {
+            const userData = getUserData();
+            return userData ? userData.user_id : null;
+        };
+
+        const getDateWithTimezone = (date) => {
+            return date.toISOString();
+        };
+
+        const getFilterDate = (filterValue, customDate = null) => {
+            const now = new Date();
+            let filterDate;
+
+            switch (filterValue) {
+                case 'hoje':
+                    filterDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    break;
+                case 'ontem':
+                    filterDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                    break;
+                case 'semana':
+                    filterDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'mes':
+                    filterDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                    break;
+                case 'tres-meses':
+                    filterDate = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+                    break;
+                case 'personalizada':
+                    if (customDate) {
+                        filterDate = new Date(customDate);
+                    }
+                    break;
+                default:
+                    return null;
+            }
+            
+            return filterDate ? getDateWithTimezone(filterDate) : null;
+        };
+
+        const formatDate = (dateString) => {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+        };
+
+        const renderTablePage = () => {
+            tableBody.innerHTML = '';
+            if (noResults) noResults.style.display = 'none';
+
+            if (filteredOs.length === 0) {
+                if (noResults) noResults.style.display = 'table-row';
+                if (paginationControls) paginationControls.style.display = 'none';
+                if (resultsInfo) resultsInfo.textContent = '';
+                return;
+            }
+            
+            if (paginationControls) paginationControls.style.display = 'flex';
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = Math.min(startIndex + rowsPerPage, filteredOs.length);
+            const pageOs = filteredOs.slice(startIndex, endIndex);
+
+            pageOs.forEach(os => {
+                const statusClass = os.status === 'Concluida' ? 'bg-success' : (os.status === 'Em andamento' ? 'bg-warning' : 'bg-secondary');
+                const servicos = (os.servicos && os.servicos.length > 0) ? os.servicos.map(s => s.nome).join(', ') : 'N/A';
+                const clienteNome = os.propriedade?.cliente?.nome || 'N/A';
+
+                const row = `
+                    <tr>
+                        <td>${servicos}</td>
+                        <td>${clienteNome}</td>
+                        <td><span class="badge ${statusClass}">${os.status}</span></td>
+                        <td>${formatDate(os.created_at)}</td>
+                        <td class="text-end">
+                            <a href="os-detalhes-funcionario.html?id=${os.id}" class="btn btn-sm btn-info" title="Visualizar"><i class="fas fa-eye"></i></a>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+            updatePagination(startIndex, endIndex);
+        };
+
+        const updatePagination = (startIndex, endIndex) => {
+            const totalPages = Math.ceil(filteredOs.length / rowsPerPage);
+            if (paginationList) paginationList.innerHTML = '';
+
+            if (totalPages <= 1) {
+                if (paginationControls) paginationControls.style.display = 'none';
+                if (resultsInfo) resultsInfo.textContent = `Exibindo ${filteredOs.length} de ${filteredOs.length} resultados`;
+                return;
+            }
+            
+            if (paginationControls) paginationControls.style.display = 'flex';
+            if (resultsInfo) resultsInfo.textContent = `Exibindo ${startIndex + 1} a ${endIndex} de ${filteredOs.length} resultados`;
+
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+            prevLi.addEventListener('click', (e) => { e.preventDefault(); if (currentPage > 1) { currentPage--; renderTablePage(); } });
+            paginationList.appendChild(prevLi);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLi = document.createElement('li');
+                pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                pageLi.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                pageLi.addEventListener('click', (e) => { e.preventDefault(); currentPage = i; renderTablePage(); });
+                paginationList.appendChild(pageLi);
+            }
+
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#">Próxima</a>`;
+            nextLi.addEventListener('click', (e) => { e.preventDefault(); if (currentPage < totalPages) { currentPage++; renderTablePage(); } });
+            paginationList.appendChild(nextLi);
+        };
+        
+        const applyFiltersAndSort = () => {
+            // Se há filtro de data ativo, buscar novamente do backend
+            const dateFilterValue = dateFilter.value;
+            if (dateFilterValue !== 'todas') {
+                const customDate = dateFilterValue === 'personalizada' ? customDateInput.value : null;
+                const filterDate = getFilterDate(dateFilterValue, customDate);
+                
+                if (filterDate) {
+                    fetchOs(filterDate);
+                    return; // A função fetchOs já vai aplicar os outros filtros
+                }
+            }
+
+            // Aplicar filtros locais quando não há filtro de data
+            let tempOs = [...allOs];
+            const searchTerm = searchInput.value.toLowerCase();
+            const status = statusFilter.value;
+            const [sortColumn, sortDirection] = sortSelect.value.split('-');
+
+            if (searchTerm) {
+                tempOs = tempOs.filter(os => {
+                    const servicosStr = (os.servicos && os.servicos.length) ? os.servicos.map(s => s.nome).join(', ').toLowerCase() : '';
+                    const clienteStr = os.propriedade?.cliente?.nome ? os.propriedade.cliente.nome.toLowerCase() : '';
+                    const dataStr = formatDate(os.created_at);
+                    return servicosStr.includes(searchTerm) || clienteStr.includes(searchTerm) || dataStr.includes(searchTerm);
+                });
+            }
+            if (status && status !== 'todos') {
+                tempOs = tempOs.filter(os => os.status === status);
+            }
+
+            tempOs.sort((a, b) => {
+                if (sortColumn === 'data_abertura') {
+                    const aDate = new Date(a.created_at);
+                    const bDate = new Date(b.created_at);
+                    return sortDirection === 'asc' ? aDate - bDate : bDate - aDate;
+                }
+                if (sortColumn === 'servico') {
+                    const aServ = (a.servicos && a.servicos.length) ? a.servicos[0].nome : '';
+                    const bServ = (b.servicos && b.servicos.length) ? b.servicos[0].nome : '';
+                    return sortDirection === 'asc' ? aServ.localeCompare(bServ) : bServ.localeCompare(aServ);
+                }
+                return 0;
+            });
+            
+            filteredOs = tempOs;
+            currentPage = 1;
+            renderTablePage();
+        };
+
+        const fetchOs = async (dateFilter = null) => {
+            if (loadingIndicator) loadingIndicator.style.display = 'table-row';
+            if(tableBody) tableBody.innerHTML = '';
+            if(noResults) noResults.style.display = 'none';
+            try {
+                let url = '/ordem-servico';
+                
+                // Se não há filtro de data específico, usa o último mês como padrão
+                if (dateFilter === null) {
+                    const oneMonthAgo = new Date();
+                    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+                    dateFilter = getDateWithTimezone(oneMonthAgo);
+                }
+                
+                if (dateFilter) {
+                    url += `?date=${encodeURIComponent(dateFilter)}`;
+                }
+                
+                const response = await authenticatedFetch(url);
+                if (!response.ok) throw new Error('Falha ao carregar ordens de serviço.');
+                const allOsData = await response.json();
+                
+                // Filtrar apenas OS onde o usuário logado está atribuído
+                const userId = getUserId();
+                allOs = allOsData.filter(os => {
+                    return os.usuarios && os.usuarios.some(u => u.id === userId);
+                });
+                
+                // Aplicar filtros locais após receber os dados
+                let tempOs = [...allOs];
+                const searchTerm = searchInput.value.toLowerCase();
+                const status = statusFilter.value;
+                const [sortColumn, sortDirection] = sortSelect.value.split('-');
+
+                if (searchTerm) {
+                    tempOs = tempOs.filter(os => {
+                        const servicosStr = (os.servicos && os.servicos.length) ? os.servicos.map(s => s.nome).join(', ').toLowerCase() : '';
+                        const clienteStr = os.propriedade?.cliente?.nome ? os.propriedade.cliente.nome.toLowerCase() : '';
+                        const dataStr = formatDate(os.created_at);
+                        return servicosStr.includes(searchTerm) || clienteStr.includes(searchTerm) || dataStr.includes(searchTerm);
+                    });
+                }
+                if (status && status !== 'todos') {
+                    tempOs = tempOs.filter(os => os.status === status);
+                }
+
+                tempOs.sort((a, b) => {
+                    if (sortColumn === 'data_abertura') {
+                        const aDate = new Date(a.created_at);
+                        const bDate = new Date(b.created_at);
+                        return sortDirection === 'asc' ? aDate - bDate : bDate - aDate;
+                    }
+                    if (sortColumn === 'servico') {
+                        const aServ = (a.servicos && a.servicos.length) ? a.servicos[0].nome : '';
+                        const bServ = (b.servicos && b.servicos.length) ? b.servicos[0].nome : '';
+                        return sortDirection === 'asc' ? aServ.localeCompare(bServ) : bServ.localeCompare(aServ);
+                    }
+                    return 0;
+                });
+                
+                filteredOs = tempOs;
+                currentPage = 1;
+                renderTablePage();
+            } catch (error) {
+                console.error("Erro ao buscar ordens de serviço:", error);
+                tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
+            } finally {
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+            }
+        };
+        
+        // Event listeners para os filtros
+        searchInput.addEventListener('input', applyFiltersAndSort);
+        statusFilter.addEventListener('change', applyFiltersAndSort);
+        sortSelect.addEventListener('change', applyFiltersAndSort);
+        
+        // Event listener para o filtro de data
+        dateFilter.addEventListener('change', (e) => {
+            if (e.target.value === 'personalizada') {
+                customDateGroup.classList.remove('d-none');
+                // Remove listener anterior para evitar duplicação
+                customDateInput.removeEventListener('change', applyFiltersAndSort);
+                customDateInput.addEventListener('change', applyFiltersAndSort);
+            } else {
+                customDateGroup.classList.add('d-none');
+                applyFiltersAndSort();
+            }
+        });
 
         fetchOs();
     }

@@ -57,43 +57,48 @@
         <main class="main-content main-content-form">
             <div class="form-card">
                 <h2 class="form-title" id="form-title">Cadastro de Usuário</h2>
+                
+                <div class="required-legend">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Os campos marcados com <span class="text-danger">*</span> são obrigatórios.
+                </div>
 
                 <form id="user-form">
                     <div class="row">
                         <!-- Coluna da Esquerda -->
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="nome" class="form-label">Nome Completo</label>
+                                <label for="nome" class="form-label required-field">Nome Completo</label>
                                 <input type="text" class="form-control" id="nome" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label required-field">Email</label>
                                 <input type="email" class="form-control" id="email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="rg" class="form-label">RG</label>
-                                <input type="text" class="form-control" id="rg" required maxlength="12">
+                                <label for="rg" class="form-label required-field">RG</label>
+                                <input type="text" class="form-control" id="rg" required maxlength="9">
                             </div>
                             <div class="mb-3">
-                                <label for="cpf" class="form-label">CPF</label>
-                                <input type="text" class="form-control" id="cpf" required maxlength="14">
+                                <label for="cpf" class="form-label required-field">CPF</label>
+                                <input type="text" class="form-control" id="cpf" required maxlength="11">
                             </div>
                         </div>
                         
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+                                <label for="dataNascimento" class="form-label required-field">Data de Nascimento</label>
                                 <input type="date" class="form-control" id="dataNascimento" required>
                             </div>
                             <div class="mb-3">
-                                <label for="cargo" class="form-label">Cargo</label>
+                                <label for="cargo" class="form-label required-field">Cargo</label>
                                 <select class="form-select" id="cargo" required>
                                     <option value="colaborador" selected>Colaborador</option>
                                     <option value="admin">Administrador</option>
                                 </select>
                             </div>
                              <div class="mb-3">
-                                <label for="status" class="form-label">Status</label>
+                                <label for="status" class="form-label required-field">Status</label>
                                 <select class="form-select" id="status" required>
                                     <option value="ativo" selected>Ativo</option>
                                     <option value="inativo">Inativo</option>

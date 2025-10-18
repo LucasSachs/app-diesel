@@ -298,3 +298,14 @@ body, html {
     }
     
 }
+
+/* Links de coordenadas para Google Maps */
+#end-coord a {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+#end-coord a:hover {
+    color: #d16f0a;
+    text-decoration: underline !important;
+}

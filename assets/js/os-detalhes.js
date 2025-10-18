@@ -74,7 +74,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const lat = typeof end?.lat === 'number' ? end.lat : (end?.lat ? Number(end.lat) : null);
                 const lng = typeof end?.long === 'number' ? end.long : (end?.long ? Number(end.long) : null);
                 if (lat != null && !isNaN(lat) && lng != null && !isNaN(lng)) {
-                    endCoord.textContent = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+                    const coordText = `${lat.toFixed(8)}, ${lng.toFixed(8)}`;
+                    const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                    endCoord.innerHTML = `<a href="${mapsUrl}" target="_blank" class="text-decoration-none">${coordText} <i class="fas fa-external-link-alt ms-1"></i></a>`;
                 } else {
                     endCoord.textContent = '-';
                 }
@@ -233,7 +235,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('valor-produtos').textContent = formatCurrency(totalProdutos);
         document.getElementById('valor-total').textContent = formatCurrency(valorTotalOS);
         
-        document.getElementById('edit-btn').href = `ordem-servico-form.html?id=${os.id}`;
+        // Verifica se o botão de editar existe (não existe na página de funcionário)
+        const editBtn = document.getElementById('edit-btn');
+        if (editBtn) {
+            editBtn.href = `ordem-servico-form.html?id=${os.id}`;
+        }
 
         const descEl = document.getElementById('os-descricao');
         if (descEl) {

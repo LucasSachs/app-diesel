@@ -11,6 +11,17 @@
     background-color: #e9ecef;
 }
 
+@media (max-width: 768px) {
+    .form-card .filter-bar {
+        flex-direction: column;
+    }
+    
+    .form-card .filter-bar .input-group {
+        min-width: 100% !important;
+        margin-bottom: 0.5rem;
+    }
+}
+
 .form-card .table {
     margin-bottom: 0;
 }

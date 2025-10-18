@@ -9,3 +9,61 @@
 .form-title {
     margin-bottom: 2rem;
 }
+
+.required-field::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.required-legend {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-left: 3px solid #dc3545;
+    border-radius: 0.25rem;
+}
+
+.required-legend .text-danger {
+    color: #dc3545 !important;
+}
+
+/* Estilo para cabeçalho de produtos */
+.produto-header {
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem !important;
+}
+
+.produto-header .form-label {
+    color: #495057;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+.email-header {
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem !important;
+}
+
+.email-header .form-label {
+    color: #495057;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+/* Estilo para cabeçalho de telefones */
+.telefone-header {
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem !important;
+}
+
+.telefone-header .form-label {
+    color: #495057;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}

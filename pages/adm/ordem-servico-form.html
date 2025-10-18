@@ -53,10 +53,16 @@
         <main class="main-content main-content-form">
             <div class="form-card">
                 <h2 id="form-title" class="form-title">Nova Ordem de Serviço</h2>
+                
+                <div class="required-legend">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Os campos marcados com <span class="text-danger">*</span> são obrigatórios.
+                </div>
+
                 <form id="os-form">
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="cliente-propriedade" class="form-label d-flex justify-content-between align-items-center">
+                            <label for="cliente-propriedade" class="form-label d-flex justify-content-between align-items-center required-field">
                                 <span>Cliente / Propriedade</span>
                                 <a href="cliente-form.html" target="_blank" class="btn btn-sm btn-outline-success">
                                     <i class="fas fa-plus"></i> Criar Novo Cliente
@@ -65,7 +71,7 @@
                             <select id="cliente-propriedade" class="form-select" required></select>
                         </div>
                         <div class="col-md-4 mb-3">
-                             <label for="responsavel" class="form-label d-flex justify-content-between align-items-center">
+                             <label for="responsavel" class="form-label d-flex justify-content-between align-items-center required-field">
                                 <span>Responsáveis</span>
                                 <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#create-user-modal">
                                     <i class="fas fa-plus"></i> Criar Novo Usuário
@@ -74,7 +80,7 @@
                             <select id="responsavel" class="form-select" multiple="multiple" required></select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="status" class="form-label">Status</label>
+                            <label for="status" class="form-label required-field">Status</label>
                             <select id="status" class="form-select" required>
                                 <option value="Em andamento">Em andamento</option>
                                 <option value="Concluida">Concluída</option>
@@ -151,23 +157,23 @@
                 <div class="modal-body">
                     <form id="new-user-form">
                          <div class="row">
-                            <div class="col-md-4 mb-3"><label for="new-user-nome" class="form-label">Nome Completo</label><input type="text" id="new-user-nome" class="form-control" required></div>
-                            <div class="col-md-4 mb-3"><label for="new-user-cpf" class="form-label">CPF</label><input type="text" id="new-user-cpf" class="form-control cpf" required></div>
+                            <div class="col-md-4 mb-3"><label for="new-user-nome" class="form-label required-field">Nome Completo</label><input type="text" id="new-user-nome" class="form-control" required></div>
+                            <div class="col-md-4 mb-3"><label for="new-user-cpf" class="form-label required-field">CPF</label><input type="text" id="new-user-cpf" class="form-control cpf" required></div>
                              <div class="col-md-4 mb-3"><label for="new-user-rg" class="form-label">RG</label><input type="text" id="new-user-rg" class="form-control"></div>
                         </div>
                          <div class="row">
-                            <div class="col-md-6 mb-3"><label for="new-user-email" class="form-label">Email</label><input type="email" id="new-user-email" class="form-control" required></div>
+                            <div class="col-md-6 mb-3"><label for="new-user-email" class="form-label required-field">Email</label><input type="email" id="new-user-email" class="form-control" required></div>
                             <div class="col-md-6 mb-3"><label for="new-user-nascimento" class="form-label">Data de Nascimento</label><input type="date" id="new-user-nascimento" class="form-control"></div>
                         </div>
                          <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="new-user-cargo" class="form-label">Cargo</label>
+                                <label for="new-user-cargo" class="form-label required-field">Cargo</label>
                                 <select id="new-user-cargo" class="form-select" required>
                                     <option value="colaborador">Colaborador</option>
                                     <option value="admin">Administrador</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3"><label for="new-user-status" class="form-label">Status</label><select id="new-user-status" class="form-select" required><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select></div>
+                            <div class="col-md-6 mb-3"><label for="new-user-status" class="form-label required-field">Status</label><select id="new-user-status" class="form-select" required><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select></div>
                         </div>
                     </form>
                 </div>
@@ -183,7 +189,7 @@
                 <div class="modal-header"><h5 class="modal-title">Criar Novo Serviço</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <form id="new-service-form">
-                        <div class="mb-3"><label for="new-service-nome" class="form-label">Nome do Serviço</label><input type="text" id="new-service-nome" class="form-control" required></div>
+                        <div class="mb-3"><label for="new-service-nome" class="form-label required-field">Nome do Serviço</label><input type="text" id="new-service-nome" class="form-control" required></div>
                         <div class="mb-3"><label for="new-service-descricao" class="form-label">Descrição</label><textarea id="new-service-descricao" class="form-control" rows="3"></textarea></div>
                     </form>
                 </div>
@@ -199,11 +205,11 @@
                 <div class="modal-header"><h5 class="modal-title">Criar Novo Produto</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <form id="new-product-form">
-                        <div class="mb-3"><label for="new-product-nome" class="form-label">Nome do Produto</label><input type="text" id="new-product-nome" class="form-control" required></div>
+                        <div class="mb-3"><label for="new-product-nome" class="form-label required-field">Nome do Produto</label><input type="text" id="new-product-nome" class="form-control" required></div>
                         <div class="mb-3"><label for="new-product-descricao" class="form-label">Descrição</label><textarea id="new-product-descricao" class="form-control" rows="3"></textarea></div>
                         <div class="row">
                             <div class="col-md-6 mb-3"><label for="new-product-tamanho" class="form-label">Tamanho do Tanque (Litros)</label><input type="number" id="new-product-tamanho" class="form-control" min="0" step="any"></div>
-                            <div class="col-md-6 mb-3"><label for="new-product-valor" class="form-label">Valor Unitário (R$)</label><input type="text" id="new-product-valor" class="form-control money" required></div>
+                            <div class="col-md-6 mb-3"><label for="new-product-valor" class="form-label required-field">Valor Unitário (R$)</label><input type="text" id="new-product-valor" class="form-control money" required></div>
                         </div>
                     </form>
                 </div>

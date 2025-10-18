@@ -49,9 +49,15 @@
 		<main class="main-content main-content-form">
 			<div class="form-card">
 				<h2 class="form-title" id="form-title">Cadastro de Serviço</h2>
+				
+				<div class="required-legend">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Os campos marcados com <span class="text-danger">*</span> são obrigatórios.
+                </div>
+
 				<form id="servico-form" novalidate>
 					<div class="mb-3">
-						<label for="nome" class="form-label">Nome do Serviço</label>
+						<label for="nome" class="form-label required-field">Nome do Serviço</label>
 						<input type="text" class="form-control" id="nome" required minlength="3" maxlength="255">
 						<div class="invalid-feedback">O nome do serviço é obrigatório (mínimo 3 caracteres).</div>
 					</div>

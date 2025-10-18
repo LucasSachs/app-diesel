@@ -53,17 +53,22 @@
         <main class="main-content main-content-form">
             <div class="form-card">
                 <h2 class="form-title" id="form-title">Cadastro de Cliente</h2>
+                
+                <div class="required-legend">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Os campos marcados com <span class="text-danger">*</span> são obrigatórios.
+                </div>
 
                 <form id="client-form" novalidate>
                     <fieldset class="mb-4">
                         <legend class="form-section-legend">Dados Principais</legend>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="nome" class="form-label">Nome Completo / Razão Social</label>
+                                <label for="nome" class="form-label required-field">Nome Completo / Razão Social</label>
                                 <input type="text" class="form-control" id="nome" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="cpf_cnpj" class="form-label">CPF/CNPJ</label>
+                                <label for="cpf_cnpj" class="form-label required-field">CPF/CNPJ</label>
                                 <input type="text" class="form-control" id="cpf_cnpj" required>
                             </div>
                         </div>
@@ -102,14 +107,14 @@
 
     <template id="email-template">
         <div class="input-group mb-2 dynamic-field">
-            <input type="email" class="form-control" placeholder="exemplo@email.com" required>
+            <input type="email" class="form-control" placeholder="Ex: contato@empresa.com" required>
             <button type="button" class="btn btn-outline-danger remove-field-btn"><i class="fas fa-trash"></i></button>
         </div>
     </template>
 
     <template id="telefone-template">
         <div class="input-group mb-2 dynamic-field">
-            <input type="tel" class="form-control telefone-input" placeholder="(XX) XXXXX-XXXX" required>
+            <input type="tel" class="form-control telefone-input" placeholder="Ex: (11) 98765-4321" required>
             <button type="button" class="btn btn-outline-danger remove-field-btn"><i class="fas fa-trash"></i></button>
         </div>
     </template>
@@ -121,14 +126,14 @@
                 <button type="button" class="btn-close remove-property-btn" aria-label="Close"></button>
             </div>
             <div class="mb-3">
-                <label class="form-label">CAD/PRO</label>
+                <label class="form-label required-field">CAD/PRO</label>
                 <input type="text" class="form-control" data-field="cadpro" oninput="this.value = this.value.replace(/\D/g, '')" required>
             </div>
             <hr>
             <h6>Endereço</h6>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">CEP</label>
+                    <label class="form-label required-field">CEP</label>
                     <input type="text" class="form-control cep-input" data-field="cep" required>
                 </div>
                  <div class="col-md-8 mb-3">
@@ -138,7 +143,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Número</label>
+                    <label class="form-label required-field">Número</label>
                     <input type="number" class="form-control" data-field="numero" required min="1">
                 </div>
                 <div class="col-md-8 mb-3">
@@ -162,11 +167,11 @@
             </div>
              <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Latitude</label>
+                    <label class="form-label required-field">Latitude</label>
                     <input type="text" inputmode="decimal" pattern="-?[0-9]+(?:[\.,][0-9]{1,12})?" class="form-control" data-field="lat" required aria-describedby="latHelp" placeholder="Ex: -23.556831106" data-min="-90" data-max="90">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Longitude</label>
+                    <label class="form-label required-field">Longitude</label>
                     <input type="text" inputmode="decimal" pattern="-?[0-9]+(?:[\.,][0-9]{1,12})?" class="form-control" data-field="long" required aria-describedby="longHelp" placeholder="Ex: -46.653830718" data-min="-180" data-max="180">
                 </div>
             </div>

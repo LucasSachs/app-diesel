@@ -68,10 +68,26 @@
                     <div class="input-group" style="min-width: 180px;">
                         <label class="input-group-text" for="filter-status">Filtrar por</label>
                         <select class="form-select" id="filter-status">
-                            <option value="todos" selected>Todos</option>
-                            <option value="Em andamento">Em andamento</option>
+                            <option value="todos">Todos</option>
+                            <option value="Em andamento" selected>Em andamento</option>
                             <option value="Concluida">Concluída</option>
                         </select>
+                    </div>
+                    <div class="input-group" style="min-width: 200px;">
+                        <label class="input-group-text" for="filter-date">Data</label>
+                        <select class="form-select" id="filter-date">
+                            <option value="todas">Todas as datas</option>
+                            <option value="hoje">Hoje</option>
+                            <option value="ontem">Ontem</option>
+                            <option value="semana">Última semana</option>
+                            <option value="mes" selected>Último mês</option>
+                            <option value="tres-meses">Últimos 3 meses</option>
+                            <option value="personalizada">Data personalizada</option>
+                        </select>
+                    </div>
+                    <div class="input-group d-none" id="custom-date-group" style="min-width: 200px;">
+                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                        <input type="date" id="custom-date" class="form-control">
                     </div>
                     <div class="input-group" style="min-width: 180px;">
                         <label class="input-group-text" for="sort-select">Ordenar por</label>
