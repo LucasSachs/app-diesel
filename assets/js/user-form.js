@@ -3,10 +3,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const formMessage = document.getElementById('form-message');
     const formTitle = document.getElementById('form-title');
     const saveButton = document.getElementById('save-button');
+    const passwordField = document.getElementById('password');
+    const confirmPasswordField = document.getElementById('confirmPassword');
+    const passwordLabel = document.getElementById('password-label');
+    const confirmPasswordLabel = document.getElementById('confirm-password-label');
+    const passwordHint = document.getElementById('password-hint');
 
     const params = new URLSearchParams(window.location.search);
     const userId = params.get('id');
     const isEditMode = userId !== null;
+
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+    togglePassword.addEventListener('click', () => {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        togglePassword.querySelector('i').classList.toggle('fa-eye');
+        togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    toggleConfirmPassword.addEventListener('click', () => {
+        const type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPasswordField.setAttribute('type', type);
+        toggleConfirmPassword.querySelector('i').classList.toggle('fa-eye');
+        toggleConfirmPassword.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    // Set password field as required in create mode
+    if (!isEditMode) {
+        passwordField.setAttribute('required', 'required');
+        confirmPasswordField.setAttribute('required', 'required');
+        passwordLabel.classList.add('required-field');
+        confirmPasswordLabel.classList.add('required-field');
+        passwordHint.style.display = 'block';
+    } else {
+        // In edit mode, password is optional
+        passwordHint.innerHTML = 'Deixe em branco se não deseja alterar a senha.';
+        passwordHint.style.display = 'block';
+    }
+
+    // Password validation
+    const validatePassword = (password) => {
+        // Strong password: at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return strongPasswordRegex.test(password);
+    };
+
+    const validatePasswordMatch = () => {
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+        
+        if (password && confirmPassword && password !== confirmPassword) {
+            confirmPasswordField.setCustomValidity('As senhas não coincidem');
+            return false;
+        } else {
+            confirmPasswordField.setCustomValidity('');
+            return true;
+        }
+    };
+
+    passwordField.addEventListener('input', validatePasswordMatch);
+    confirmPasswordField.addEventListener('input', validatePasswordMatch);
 
     const loadUserData = async () => {
         if (!isEditMode) return;
@@ -42,6 +101,27 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             formMessage.innerHTML = '';
 
+            // Validate password match
+            if (!validatePasswordMatch()) {
+                formMessage.innerHTML = '<div class="alert alert-danger">As senhas não coincidem.</div>';
+                return;
+            }
+
+            const password = passwordField.value.trim();
+            const confirmPassword = confirmPasswordField.value.trim();
+
+            // Validate password strength if provided
+            if (password && !validatePassword(password)) {
+                formMessage.innerHTML = '<div class="alert alert-danger">A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais (@$!%*?&).</div>';
+                return;
+            }
+
+            // Check if password is required (create mode) or provided (edit mode)
+            if (!isEditMode && !password) {
+                formMessage.innerHTML = '<div class="alert alert-danger">A senha é obrigatória para criar um novo usuário.</div>';
+                return;
+            }
+
             const userData = {
                 nome: document.getElementById('nome').value,
                 email: document.getElementById('email').value,
@@ -51,6 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 cargo: document.getElementById('cargo').value,
                 status: document.getElementById('status').value,
             };
+
+            // Add password only if provided
+            if (password) {
+                userData.senha = password;
+            }
 
             let response;
             try {
