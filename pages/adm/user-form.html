@@ -104,17 +104,27 @@
                                     <option value="inativo">Inativo</option>
                                 </select>
                             </div>
-                            <!-- Campos de senha comentados para nos implementarmos no futuro -->
-                            <!--
                             <div class="mb-3">
-                                <label for="password" class="form-label">Senha</label>
-                                <input type="password" class="form-control" id="password">
+                                <label for="password" class="form-label" id="password-label">Senha</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password">
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="form-text text-muted" id="password-hint" style="display: none;">
+                                    A senha deve conter pelo menos 8 caracteres, incluindo maiúsculas, minúsculas, números e caracteres especiais.
+                                </small>
                             </div>
                             <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirmar Senha</label>
-                                <input type="password" class="form-control" id="confirmPassword">
+                                <label for="confirmPassword" class="form-label" id="confirm-password-label">Confirmar Senha</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="confirmPassword">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
                             </div>
-                            -->
                         </div>
                     </div>
 
