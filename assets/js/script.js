@@ -11,17 +11,14 @@ $(document).ready(function() {
         const formatBRL = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(v || 0))  
         const formatDate = iso => new Date(iso).toLocaleString('pt-BR', { timeZone: tz })  
   
-        const rows = [  
-            ['Data Inicial', 'Data Final', 'Valor Total', 'Valor Descolamento', 'Valor Deslocamento', 'Valor Produtos'],  
-            [  
+        const rows = [['Data Inicial', 'Data Final', 'Valor Total', 'Valor Descolamento', 'Valor Deslocamento', 'Valor Produtos'], [  
             formatDate(payload.from),  
             formatDate(payload.to),  
             formatBRL(payload.total),  
             formatBRL(payload.totalDeslocamento),  
             formatBRL(payload.totalMo),  
             formatBRL(payload.totalProdutos),  
-            ],  
-        ]  
+        ]]  
   
         const csv = rows.map(row => row  
             .map(cell => {  
