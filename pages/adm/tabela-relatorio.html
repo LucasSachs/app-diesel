@@ -73,10 +73,31 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Relatório</th>
+                                <th>Intervalo</th>
                                 <th class="text-end">Ações</th>
                             </tr>
                         </thead>
+
                         <tbody id="relatoriosTableBody">
+                            <tr>
+                                <th scope="row">Financeiro</th>
+                                <th>Últimos 30 dias</th>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-info" title="Visualizar" id="btnDownloadFinanceiro">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Venda de Produtos</th>
+                                <th>Últimos 30 dias</th>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-info" title="Visualizar" id="btnDownloadProdutos">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
