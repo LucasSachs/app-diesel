@@ -14,6 +14,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const osId = urlParams.get('id');
 
+        // Controle do campo Status - mostrar apenas na edição
+        const statusFieldContainer = document.getElementById('status-field-container');
+        const statusSelect = document.getElementById('status');
+        
+        if (osId) {
+            // Modo edição - mostrar campo de status
+            statusFieldContainer.style.display = 'block';
+            statusSelect.required = true;
+        } else {
+            // Modo criação - ocultar campo de status e definir como Pendente
+            statusFieldContainer.style.display = 'none';
+            statusSelect.required = false;
+            statusSelect.value = 'Pendente';
+        }
+
         //  Modais 
         const createUserModal = new bootstrap.Modal(document.getElementById('create-user-modal'));
         const newUserForm = document.getElementById('new-user-form');
@@ -34,6 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         $('.money').mask('000.000.000.000.000,00', { reverse: true });
         $('.cpf').mask('000.000.000-00', { reverse: true });
+        $('#new-user-rg').mask('000000000'); // Máscara para RG - 9 dígitos
+
+        document.querySelectorAll('.password-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
 
 
         const getNumericValue = (formattedValue) => {
@@ -305,6 +339,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Listeners dos Modais 
         
         saveNewUserBtn.addEventListener('click', async () => {
+            const senha = document.getElementById('new-user-senha').value;
+            const confirmarSenha = document.getElementById('new-user-confirmar-senha').value;
+            
+            // Validação de senha
+            if (!senha || !confirmarSenha) {
+                alert('Por favor, preencha os campos de senha.');
+                return;
+            }
+            
+            if (senha.length < 6) {
+                alert('A senha deve ter no mínimo 6 caracteres.');
+                return;
+            }
+            
+            if (senha !== confirmarSenha) {
+                alert('As senhas não coincidem. Por favor, verifique.');
+                return;
+            }
+            
             const dataNascimentoValue = document.getElementById('new-user-nascimento').value;
             
             let dataNascimentoISO = null;
@@ -318,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cpf: document.getElementById('new-user-cpf').value.replace(/\D/g, ''),
                 rg: document.getElementById('new-user-rg').value,
                 email: document.getElementById('new-user-email').value,
-                senha: 'senha123',
+                senha: senha,
                 cargo: document.getElementById('new-user-cargo').value,
                 status: document.getElementById('new-user-status').value,
                 data_nascimento: dataNascimentoISO

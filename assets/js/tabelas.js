@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const row = `
                     <tr>
-                        <td>${user.id}</td>
                         <td>${user.nome}</td>
                         <td>${user.email}</td>
                         <td>${cargoFormatted}</td>
@@ -148,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 applyFiltersAndSort();
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
-                if(tableBody) tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
+                if(tableBody) tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
             } finally {
                 if(loadingIndicator) loadingIndicator.style.display = 'none';
             }
@@ -195,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
             pageProducts.forEach(product => {
                 const row = `
                     <tr>
-                        <td>${product.id}</td>
                         <td>${product.nome}</td>
                         <td>${product.descricao || '-'}</td>
                         <td>${product.tamanho_tanque ? `${product.tamanho_tanque} L` : '-'}</td>
@@ -295,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 applyFiltersAndSort();
             } catch (error) {
                 console.error("Erro ao buscar produtos:", error);
-                if(tableBody) tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
+                if(tableBody) tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
             } finally {
                 if(loadingIndicator) loadingIndicator.style.display = 'none';
             }
@@ -339,7 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
             pageClients.forEach(client => {
                 const row = `
                     <tr>
-                        <td>${client.id}</td>
                         <td>${client.nome}</td>
                         <td>${client.cpf_cnpj}</td>
                         <td class="text-center">
@@ -403,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 applyFiltersAndSort();
             } catch (error) {
                 console.error("Erro ao buscar clientes:", error);
-                 if(tableBody) tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
+                 if(tableBody) tableBody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
             } finally {
                 if(loadingIndicator) loadingIndicator.style.display = 'none';
             }
@@ -466,7 +463,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const row = `
                     <tr>
-                        <td>${client.id}</td>
                         <td>${client.nome}</td>
                         <td>${formatCpfCnpj(client.cpf_cnpj)}</td>
                         <td>${firstTelefone}</td>
@@ -566,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 applyFiltersAndSort();
             } catch (error) {
                 console.error("Erro ao buscar clientes:", error);
-                 if(tableBody) tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
+                 if(tableBody) tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
             } finally {
                 if(loadingIndicator) loadingIndicator.style.display = 'none';
             }
@@ -658,7 +654,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const pageOs = filteredOs.slice(startIndex, endIndex);
 
             pageOs.forEach(os => {
-                const statusClass = os.status === 'Concluida' ? 'bg-success' : (os.status === 'Em andamento' ? 'bg-warning' : 'bg-secondary');
+                const statusClass = os.status === 'Concluida' ? 'bg-success' : 
+                                   os.status === 'Em andamento' ? 'bg-warning' : 
+                                   os.status === 'Cancelada' ? 'bg-danger' : 
+                                   'bg-secondary';
                 const servicos = (os.servicos && os.servicos.length > 0) ? os.servicos.map(s => s.nome).join(', ') : 'N/A';
                 const clienteNome = os.propriedade?.cliente?.nome || 'N/A';
                 const responsaveis = (os.usuarios && os.usuarios.length > 0) ? os.usuarios.map(u => u.nome).join(', ') : 'N/A';
@@ -944,7 +943,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const pageOs = filteredOs.slice(startIndex, endIndex);
 
             pageOs.forEach(os => {
-                const statusClass = os.status === 'Concluida' ? 'bg-success' : (os.status === 'Em andamento' ? 'bg-warning' : 'bg-secondary');
+                const statusClass = os.status === 'Concluida' ? 'bg-success' : 
+                                   os.status === 'Em andamento' ? 'bg-warning' : 
+                                   os.status === 'Cancelada' ? 'bg-danger' : 
+                                   'bg-secondary';
                 const servicos = (os.servicos && os.servicos.length > 0) ? os.servicos.map(s => s.nome).join(', ') : 'N/A';
                 const clienteNome = os.propriedade?.cliente?.nome || 'N/A';
 

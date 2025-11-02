@@ -2,50 +2,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('servicos-table-body');
     const searchInput = document.getElementById('search-input');
     const sortSelect = document.getElementById('sort-select');
+    const paginationControls = document.getElementById('pagination-controls');
+    const resultsInfo = document.getElementById('results-info');
+    const paginationList = document.getElementById('pagination-list');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const noResults = document.getElementById('no-results');
+
     let currentPage = 1;
     const rowsPerPage = 10;
     let allServicos = [];
     let filteredServicos = [];
 
-    let paginationControls = document.getElementById('pagination-controls');
-    let resultsInfo = document.getElementById('results-info');
-    let paginationList = document.getElementById('pagination-list');
-    let noResults = document.getElementById('no-results');
-
-    if (!paginationControls) {
-        paginationControls = document.createElement('div');
-        paginationControls.id = 'pagination-controls';
-        paginationControls.className = 'd-flex justify-content-between align-items-center mt-3';
-        paginationControls.style.display = 'none';
-        resultsInfo = document.createElement('span');
-        resultsInfo.id = 'results-info';
-        resultsInfo.className = 'text-muted';
-        paginationList = document.createElement('ul');
-        paginationList.className = 'pagination mb-0';
-        paginationList.id = 'pagination-list';
-        paginationControls.appendChild(resultsInfo);
-        const nav = document.createElement('nav');
-        nav.appendChild(paginationList);
-        paginationControls.appendChild(nav);
-        tableBody.parentElement.parentElement.appendChild(paginationControls);
-    }
-    if (!noResults) {
-        noResults = document.createElement('tr');
-        noResults.className = 'no-results-row';
-        noResults.style.display = 'none';
-        noResults.innerHTML = `<td colspan="3" class="text-center"><p id="no-results">Nenhum serviço encontrado.</p></td>`;
-        tableBody.appendChild(noResults);
-    }
-
     const renderTablePage = () => {
         tableBody.innerHTML = '';
+        if (noResults) noResults.style.display = 'none';
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+        
         if (filteredServicos.length === 0) {
-            if (noResults) noResults.style.display = 'block';
+            if (noResults) noResults.style.display = 'table-row';
             if (paginationControls) paginationControls.style.display = 'none';
-            tableBody.appendChild(noResults);
             return;
         }
-        if (noResults) noResults.style.display = 'none';
 
         const startIndex = (currentPage - 1) * rowsPerPage;
         const endIndex = Math.min(startIndex + rowsPerPage, filteredServicos.length);
@@ -57,8 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${servico.nome}</td>
                     <td>${servico.descricao || '-'}</td>
                     <td class="text-center">
-                        <a href="servico-detalhes.html?id=${servico.id}" class="btn btn-sm btn-info" title="Visualizar"><i class="fas fa-eye"></i></a>
-                        <a href="servico-form.html?id=${servico.id}" class="btn btn-sm btn-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="servico-detalhes-funcionario.html?id=${servico.id}" class="btn btn-sm btn-info" title="Visualizar"><i class="fas fa-eye"></i></a>
                     </td>
                 </tr>
             `;
@@ -92,6 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         paginationList.appendChild(prevLi);
+
+        // Páginas numeradas
         for (let i = 1; i <= totalPages; i++) {
             const pageLi = document.createElement('li');
             pageLi.className = `page-item ${i === currentPage ? 'active' : ''}`;
@@ -103,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             paginationList.appendChild(pageLi);
         }
+
+        // Botão "Próxima"
         const nextLi = document.createElement('li');
         nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
         nextLi.innerHTML = `<a class="page-link" href="#">Próxima</a>`;
@@ -123,7 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (searchTerm) {
             tempServicos = tempServicos.filter(servico =>
-                servico.nome.toLowerCase().includes(searchTerm)
+                servico.nome.toLowerCase().includes(searchTerm) ||
+                (servico.descricao && servico.descricao.toLowerCase().includes(searchTerm))
             );
         }
 
@@ -142,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const fetchServicos = async () => {
+        if (loadingIndicator) loadingIndicator.style.display = 'table-row';
         if (tableBody) tableBody.innerHTML = '';
         try {
             const response = await authenticatedFetch('/servico');
@@ -151,6 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Erro ao buscar serviços:', error);
             if (tableBody) tableBody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Erro ao carregar dados.</td></tr>`;
+        } finally {
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
         }
     };
 

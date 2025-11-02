@@ -186,8 +186,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const statusEl = document.getElementById('os-status');
     statusEl.textContent = os.status || 'Não informado';
-    statusEl.classList.remove('bg-success','bg-warning','bg-secondary');
-    statusEl.classList.add(os.status === 'Concluida' ? 'bg-success' : (os.status === 'Em andamento' ? 'bg-warning' : 'bg-secondary'));
+    statusEl.classList.remove('bg-success','bg-warning','bg-secondary','bg-danger');
+    statusEl.classList.add(
+        os.status === 'Concluida' ? 'bg-success' : 
+        os.status === 'Em andamento' ? 'bg-warning' : 
+        os.status === 'Cancelada' ? 'bg-danger' : 
+        'bg-secondary'
+    );
     const responsaveis = (os.usuarios && os.usuarios.length) ? os.usuarios.map(u => u.nome).join(', ') : 'Não informado';
     document.getElementById('os-responsavel').textContent = responsaveis;
     document.getElementById('os-data').textContent = formatDate(os.created_at);
