@@ -1,11 +1,13 @@
 $(document).ready(function() {
-    const btnDownloadFinanceiro = document.getElementById('btnDownloadFinanceiro')  
-    const btnDownloadProdutos = document.getElementById('btnDownloadProdutos')  
-    
-    btnDownloadFinanceiro.addEventListener('click', async e => {  
-        const response = await authenticatedFetch(`/relatorio/financeiro?months=1`);
-        const payload = await response.json();
+    const btnRelatorioFinanceiro7Dias = document.getElementById('btnRelatorioFinanceiro7Dias')
+    const btnRelatorioFinanceiro15Dias = document.getElementById('btnRelatorioFinanceiro15Dias')
+    const btnRelatorioFinanceiro30Dias = document.getElementById('btnRelatorioFinanceiro30Dias')
 
+    const btnRelatorioProdutos7Dias = document.getElementById('btnRelatorioProdutos7Dias')
+    const btnRelatorioProdutos15Dias = document.getElementById('btnRelatorioProdutos15Dias')
+    const btnRelatorioProdutos30Dias = document.getElementById('btnRelatorioProdutos30Dias')
+
+    function formatCSVFinanceiro(payload) {
         const tz = Intl.DateTimeFormat().resolvedOptions().timeZone  
   
         const formatBRL = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(v || 0))  
@@ -20,16 +22,41 @@ $(document).ready(function() {
             formatBRL(payload.totalProdutos),  
         ]]  
   
-        const csv = rows.map(row => row  
-            .map(cell => {  
+        const csv = rows.map(row => row.map(cell => {  
                 const s = String(cell ?? '')  
                 const needsQuotes = /[",;\n]/.test(s)  
                 const escaped = s.replace(/"/g, '""')  
                 
                 return needsQuotes ? `"${escaped}"` : escaped  
             }).join(';')  
-        ).join('\n')  
-  
+        ).join('\n')
+
+        return csv
+    }
+
+    function formatCSVProdutos(payload) {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        const formatBRL = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(v || 0));
+
+        const rows = ['Produto', 'Quantidade', 'Valor Total', 'Valor Mínimo', 'Valor Médio'];
+
+        for (const produto of payload.produtos) {
+            rows.push([
+                produto.nome,
+                produto.quantidade,
+                formatBRL(produto.total),
+                formatBRL(produto.minimo),
+                formatBRL(produto.medio)
+            ]);
+        }
+
+        const csv = rows.map(row => row.map(field => `"${field.replace(/"/g, '""')}"`).join(';')).join('\n');
+
+        return csv;
+    }
+
+    function downloadRelatorio(csv) {
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })  
         const url = URL.createObjectURL(blob)  
         const a = document.createElement('a')  
@@ -40,9 +67,53 @@ $(document).ready(function() {
         a.click()  
         document.body.removeChild(a)  
         URL.revokeObjectURL(url)
+    }
+    
+    btnRelatorioFinanceiro7Dias.addEventListener('click', async e => {  
+        const response = await authenticatedFetch(`/relatorio/financeiro?days=7`);
+        const payload = await response.json();
+
+        const csv = formatCSVFinanceiro(payload)
+        downloadRelatorio(csv)
+    }) 
+    
+    btnRelatorioFinanceiro15Dias.addEventListener('click', async e => {  
+        const response = await authenticatedFetch(`/relatorio/financeiro?days=15`);
+        const payload = await response.json();
+
+        const csv = formatCSVFinanceiro(payload)
+        downloadRelatorio(csv)
     })  
     
-    btnDownloadProdutos.addEventListener('click', e => {  
-        // handle produtos download  
+    btnRelatorioFinanceiro30Dias.addEventListener('click', async e => {  
+        const response = await authenticatedFetch(`/relatorio/financeiro?days=30`);
+        const payload = await response.json();
+
+        const csv = formatCSVFinanceiro(payload)
+        downloadRelatorio(csv)
+    })  
+    
+    btnRelatorioProdutos7Dias.addEventListener('click', async e => {  
+        const response = await authenticatedFetch(`/relatorio/produtos?days=7`);
+        const payload = await response.json();
+
+        const csv = formatCSVProdutos(payload)
+        downloadRelatorio(csv)
+    })
+
+    btnRelatorioProdutos15Dias.addEventListener('click', async e => {  
+        const response = await authenticatedFetch(`/relatorio/produtos?days=15`);
+        const payload = await response.json();
+
+        const csv = formatCSVProdutos(payload)
+        downloadRelatorio(csv)
+    })
+
+    btnRelatorioProdutos30Dias.addEventListener('click', async e => {  
+        const response = await authenticatedFetch(`/relatorio/produtos?days=30`);
+        const payload = await response.json();
+
+        const csv = formatCSVProdutos(payload)
+        downloadRelatorio(csv)
     })
 });

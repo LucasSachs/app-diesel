@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const apiUrl = 'http://localhost:3000/servico';
+    const apiUrl = 'https://api.vosgerausolucaoemanutencaodetanque.site/servico';
     const urlParams = new URLSearchParams(window.location.search);
     const servicoId = urlParams.get('id');
 

@@ -75,7 +75,7 @@ async function authenticatedFetch(url, options = {}) {
         ...options.headers,
     };
 
-    const response = await fetch(`http://localhost:3000${url}`, { ...options, headers });
+    const response = await fetch(`https://api.vosgerausolucaoemanutencaodetanque.site${url}`, { ...options, headers });
 
     if (response.status === 401) {
         logout();
