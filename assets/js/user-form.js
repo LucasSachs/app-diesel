@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userId = params.get('id');
     const isEditMode = userId !== null;
 
-    // Toggle password visibility
     const togglePassword = document.getElementById('togglePassword');
     const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
 
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleConfirmPassword.querySelector('i').classList.toggle('fa-eye-slash');
     });
 
-    // Set password field as required in create mode
     if (!isEditMode) {
         passwordField.setAttribute('required', 'required');
         confirmPasswordField.setAttribute('required', 'required');
@@ -39,14 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmPasswordLabel.classList.add('required-field');
         passwordHint.style.display = 'block';
     } else {
-        // In edit mode, password is optional
         passwordHint.innerHTML = 'Deixe em branco se não deseja alterar a senha.';
         passwordHint.style.display = 'block';
     }
 
-    // Password validation
     const validatePassword = (password) => {
-        // Strong password: at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
         const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return strongPasswordRegex.test(password);
     };
@@ -101,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             formMessage.innerHTML = '';
 
-            // Validate password match
             if (!validatePasswordMatch()) {
                 formMessage.innerHTML = '<div class="alert alert-danger">As senhas não coincidem.</div>';
                 return;
@@ -110,13 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = passwordField.value.trim();
             const confirmPassword = confirmPasswordField.value.trim();
 
-            // Validate password strength if provided
             if (password && !validatePassword(password)) {
                 formMessage.innerHTML = '<div class="alert alert-danger">A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais (@$!%*?&).</div>';
                 return;
             }
 
-            // Check if password is required (create mode) or provided (edit mode)
             if (!isEditMode && !password) {
                 formMessage.innerHTML = '<div class="alert alert-danger">A senha é obrigatória para criar um novo usuário.</div>';
                 return;
@@ -132,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: document.getElementById('status').value,
             };
 
-            // Add password only if provided
             if (password) {
                 userData.senha = password;
             }
