@@ -98,7 +98,7 @@ body, html {
 #app-header {
     background-color: var(--primary-color);
     color: var(--white-color);
-    height: 70px;
+    height: 100px;
     position: sticky;
     top: 0;
     z-index: 1030;
@@ -108,6 +108,30 @@ body, html {
     font-weight: bold;
     font-size: 1.8rem;
     margin: 0;
+}
+
+/* Bloco de data e hora no header */
+.header-datetime {
+    display: none;
+    text-align: center;
+    color: var(--white-color);
+}
+
+.header-datetime .date {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.header-datetime .time {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+@media (min-width: 992px) {
+    .header-datetime {
+        display: block;
+    }
 }
 
 /* Menu Lateral do queridão */
@@ -297,6 +321,26 @@ body, html {
         font-size: 0.8rem;
     }
     
+    /* Centralizar logo no mobile */
+    .logo-text {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0;
+    }
+    
+    #app-header .container-fluid {
+        justify-content: center !important;
+    }
+    
+    #app-header .d-flex {
+        width: 100%;
+        justify-content: center !important;
+    }
+
+    .logout-text {
+        display: none;
+    }
 }
 
 /* Links de coordenadas para Google Maps */

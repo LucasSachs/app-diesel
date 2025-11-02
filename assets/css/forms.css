@@ -67,3 +67,20 @@
     font-size: 0.875rem;
     margin-bottom: 0;
 }
+
+.password-toggle-btn {
+    cursor: pointer;
+    border-left: 0;
+}
+
+.password-toggle-btn:hover {
+    background-color: #e9ecef;
+}
+
+.password-toggle-btn i {
+    color: #6c757d;
+}
+
+.input-group .form-control:focus + .password-toggle-btn {
+    border-color: #86b7fe;
+}
