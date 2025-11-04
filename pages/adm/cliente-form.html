@@ -81,7 +81,7 @@
 
                     <fieldset class="mb-4">
                         <legend class="form-section-legend d-flex justify-content-between align-items-center">
-                            <span>Contatos</span>
+                            <span class="required-field">Contatos</span>
                             <div>
                                 <button type="button" id="add-email" class="btn btn-sm btn-outline-primary me-2"><i class="fas fa-plus"></i> Email</button>
                                 <button type="button" id="add-telefone" class="btn btn-sm btn-outline-primary"><i class="fas fa-plus"></i> Telefone</button>
@@ -141,7 +141,7 @@
             <h6>Endereço</h6>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label class="form-label required-field">CEP</label>
+                    <label class="form-label">CEP</label>
                     <input type="text" class="form-control cep-input" data-field="cep" required aria-describedby="cepHelp">
                     <small id="cepHelp" class="form-text text-muted">O endereço será preenchido automaticamente após digitar o CEP.</small>
                 </div>
@@ -153,14 +153,14 @@
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label class="form-label required-field">Número</label>
+                    <label class="form-label">Número</label>
                     <input type="number" class="form-control" data-field="numero" required min="1" aria-describedby="numeroHelp">
                     <small id="numeroHelp" class="form-text text-muted">Número do endereço.</small>
                 </div>
                 <div class="col-md-8 mb-3">
                     <label class="form-label">Complemento</label>
                     <input type="text" class="form-control" data-field="complemento" placeholder="Opcional" aria-describedby="complementoHelp">
-                    <small id="complementoHelp" class="form-text text-muted">Apartamento, bloco, sala, etc. (opcional).</small>
+                    <small id="complementoHelp" class="form-text text-muted">Apartamento, bloco, sala, etc.</small>
                 </div>
             </div>
             <div class="row">
