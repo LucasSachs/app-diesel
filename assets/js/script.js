@@ -35,26 +35,28 @@ $(document).ready(function() {
     }
 
     function formatCSVProdutos(payload) {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        console.log(payload)
+    const formatBRL = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(v) || 0);
 
-        const formatBRL = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(v || 0));
+    const headers = ['Nome', 'Quantidade', 'Total', 'Mínimo', 'Médio'];
+    const rows = [headers];
 
-        const rows = ['Produto', 'Quantidade', 'Valor Total', 'Valor Mínimo', 'Valor Médio'];
-
-        for (const produto of payload.produtos) {
-            rows.push([
-                produto.nome,
-                produto.quantidade,
-                formatBRL(produto.total),
-                formatBRL(produto.minimo),
-                formatBRL(produto.medio)
-            ]);
-        }
-
-        const csv = rows.map(row => row.map(field => `"${field.replace(/"/g, '""')}"`).join(';')).join('\n');
-
-        return csv;
+    for (const produto of payload.produtos) {
+        const linha = [
+            produto.nome || '',
+            produto.quantidade ?? '',
+            formatBRL(produto.total),
+            formatBRL(produto.minimo),
+            formatBRL(produto.medio)
+        ];
+        rows.push(linha);
     }
+
+    const csv = rows.map(row => Array.isArray(row) ? row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(';') : '' ).join('\n');
+
+    return csv;
+}
+
 
     function downloadRelatorio(csv) {
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })  
