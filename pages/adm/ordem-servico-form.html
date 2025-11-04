@@ -98,7 +98,7 @@
 
                     <div class="mb-4">
                         <label for="servicos-select" class="form-label d-flex justify-content-between align-items-center">
-                            <h5>Serviços Prestados</h5>
+                            <h5 class="required-field">Serviços Prestados</h5>
                             <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#create-service-modal" title="Criar Novo Serviço">
                                 <i class="fas fa-plus"></i> Criar Novo Serviço
                             </button>
@@ -115,7 +115,7 @@
 
                     <div class="mb-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h5>Produtos Utilizados</h5>
+                            <h5 class="required-field">Produtos Utilizados</h5>
                             <div>
                                 <button type="button" class="btn btn-sm btn-outline-primary" id="add-product-btn">
                                     <i class="fas fa-plus me-1"></i> Adicionar Produto
@@ -133,12 +133,12 @@
 
                     <div class="row align-items-end">
                          <div class="col-md-4 mb-3">
-                            <label for="valor-mo" class="form-label">Valor Mão de Obra (R$)</label>
+                            <label for="valor-mo" class="form-label required-field">Valor Mão de Obra (R$)</label>
                             <input type="text" id="valor-mo" class="form-control money" aria-describedby="valorMoHelp">
                             <small id="valorMoHelp" class="form-text text-muted">Valor cobrado pela mão de obra do serviço (opcional).</small>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="valor-deslocamento" class="form-label">Valor Deslocamento (R$)</label>
+                            <label for="valor-deslocamento" class="form-label required-field">Valor Deslocamento (R$)</label>
                             <input type="text" id="valor-deslocamento" class="form-control money" aria-describedby="valorDeslocamentoHelp">
                             <small id="valorDeslocamentoHelp" class="form-text text-muted">Custo de deslocamento até a propriedade (opcional).</small>
                         </div>
