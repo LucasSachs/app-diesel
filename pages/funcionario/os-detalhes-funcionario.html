@@ -96,6 +96,33 @@
                     </div>
                 </div>
 
+                <div class="card mb-4 d-none" id="edit-status-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Atualizar Status da OS</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="status-update-form">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <label for="status-select" class="form-label">Novo Status</label>
+                                    <select id="status-select" class="form-select" required>
+                                        <option value="Pendente">Pendente</option>
+                                        <option value="Em andamento">Em andamento</option>
+                                        <option value="Concluida">Concluída</option>
+                                        <option value="Cancelada">Cancelada</option>
+                                    </select>
+                                    <small class="form-text text-muted">Selecione o novo status da ordem de serviço</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-success w-100" id="save-status-btn">
+                                        <i class="fas fa-save me-1"></i> Salvar Status
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card mb-4">
@@ -194,6 +221,6 @@
 
     <script src="../../bootstrap5/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="../../assets/js/os-detalhes.js"></script> 
+    <script src="../../assets/js/os-detalhes-funcionario.js"></script> 
 </body>
 </html>
